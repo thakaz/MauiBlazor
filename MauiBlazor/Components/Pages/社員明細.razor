@@ -1,0 +1,96 @@
+﻿@page "/employeedetail/{社員番号}"
+@inject 出退勤Database db
+@using Microsoft.FluentUI.AspNetCore.Components
+
+@inject IJSRuntime JSRuntime
+
+<h3>社員明細</h3>
+
+@if (社員 is null)
+{
+    <FluentProgressRing></FluentProgressRing>
+}
+else
+{
+
+    <FluentStack>
+        <FluentCard>
+            <FluentLabel>@社員.社員番号</FluentLabel>
+            <FluentLabel>@社員.名前</FluentLabel>
+            <FluentLabel>@社員.入社年度</FluentLabel>
+            <FluentLabel>@社員.備考</FluentLabel>
+        </FluentCard>
+
+        <FluentStack>
+
+            <FluentButton OnClick="出勤ボタンクリック">
+                打刻
+            </FluentButton>
+
+            <FluentButton OnClick="Get社員打刻">
+                打刻情報取得
+            </FluentButton>
+
+            <FluentButton OnClick="戻るボタン">戻る</FluentButton>
+
+        </FluentStack>
+
+    </FluentStack>
+
+
+    <FluentDataGrid Items="@(社員打刻s.AsQueryable())" >
+        <PropertyColumn Property="@(p => p.社員番号)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.打刻時間)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.備考)" Sortable="true" />
+    </FluentDataGrid>
+}
+
+@code {
+
+
+    [Parameter]
+    public string 社員番号 { get; set; }
+
+    private 社員? 社員 { get; set; }
+
+    private IList<社員打刻> 社員打刻s { get; set; } = new List<社員打刻>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine($"社員番号: {社員番号}");
+
+        try
+        {
+
+            社員 = await db.Get社員Async(社員番号);
+
+
+        }
+        catch (Exception ex)
+        {
+            await ((Application)app).Windows[0].Page!.DisplayAlert("エラー", "社員が存在しない。", "OK");
+        }
+    }
+
+    private async Task 出勤ボタンクリック()
+    {
+        await db.Add社員打刻Async(new 社員打刻
+            {
+                社員番号 = 社員番号,
+                打刻時間 = DateTime.Now
+            });
+    }
+
+
+    private async Task Get社員打刻()
+    {
+        社員打刻s = await db.Get社員打刻Async(社員番号);
+    }
+
+    private async Task 戻るボタン()
+    {
+        await JSRuntime.InvokeVoidAsync("history.back", -1);
+    }
+
+
+}

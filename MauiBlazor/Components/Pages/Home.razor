@@ -1,0 +1,14 @@
+﻿@page "/"
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<FluentButton Text="Click me" OnClick="ClickMe" />
+
+@code{
+    private async Task ClickMe()
+    {
+        await ((Application)app).Windows[0].Page!.DisplayAlert("クリック","クリックされました。" , "OK");
+    }
+}
