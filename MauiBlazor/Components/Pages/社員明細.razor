@@ -23,6 +23,8 @@ else
 
         <FluentStack>
 
+            <input type="datetime-local" step="2" @bind-value="打刻時間" />
+            <InputDate @bind-Value="打刻時間"></InputDate>
             <FluentButton OnClick="出勤ボタンクリック">
                 打刻
             </FluentButton>
@@ -39,9 +41,16 @@ else
 
 
     <FluentDataGrid Items="@(社員打刻s.AsQueryable())" >
+        <PropertyColumn Property="@(p => p.Id)" Sortable="true" />
         <PropertyColumn Property="@(p => p.社員番号)" Sortable="true" />
         <PropertyColumn Property="@(p => p.打刻時間)" Sortable="true" />
         <PropertyColumn Property="@(p => p.備考)" Sortable="true" />
+
+        <TemplateColumn Title="削除">
+            <FluentButton OnClick="()=>打刻削除(context.Id)" >削除</FluentButton>
+        </TemplateColumn>
+
+
     </FluentDataGrid>
 }
 
@@ -53,7 +62,10 @@ else
 
     private 社員? 社員 { get; set; }
 
+    private DateTime 打刻時間 { get; set; } = DateTime.Now;
+
     private IList<社員打刻> 社員打刻s { get; set; } = new List<社員打刻>();
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -74,11 +86,23 @@ else
 
     private async Task 出勤ボタンクリック()
     {
-        await db.Add社員打刻Async(new 社員打刻
+
+        //出勤区分を取得
+        var 打刻データ = new 社員打刻
             {
                 社員番号 = 社員番号,
-                打刻時間 = DateTime.Now
-            });
+                打刻時間 = 打刻時間
+            };
+
+
+        var 周辺打刻 = (await db.Get社員打刻Async(社員番号));
+
+        打刻データ.備考 = 出退勤判定Service.判定(打刻データ, 周辺打刻).ToString();
+
+
+        await db.Add社員打刻Async(打刻データ);
+
+        await Get社員打刻();
     }
 
 
@@ -93,6 +117,13 @@ else
     private async Task 戻るボタン()
     {
         await JSRuntime.InvokeVoidAsync("history.back", -1);
+    }
+
+    private async Task 打刻削除(int id)
+    {
+        await db.Delete社員打刻Async(id);
+        await Get社員打刻();
+
     }
 
 

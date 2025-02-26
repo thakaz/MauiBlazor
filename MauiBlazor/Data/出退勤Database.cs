@@ -65,4 +65,13 @@ class 出退勤Database
             .ToListAsync();
     }
 
+    //社員打刻の削除
+    public async Task Delete社員打刻Async(int id)
+    {
+        await Init();
+        //データの削除
+        await Database.DeleteAsync<社員打刻>(id);
+
+    }
+
 }
