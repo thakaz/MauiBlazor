@@ -1,15 +1,14 @@
 ﻿@page "/employeedetail/{id:int}"
 
 @inject 打刻Service 打刻Service
+@inject I社員カードRepository 社員カードRepository
 @inject I社員打刻Repository 社員打刻Repository
 @inject I社員Repository 社員Repository
 @inject カード読み取りService カード読み取りService
+@inject IJSRuntime JSRuntime
 
 @implements IDisposable
 
-@using Microsoft.FluentUI.AspNetCore.Components
-
-@inject IJSRuntime JSRuntime
 
 <h3>社員明細</h3>
 
@@ -47,17 +46,22 @@ else
     </FluentStack>
 
 
-    <FluentDataGrid Items="@(社員打刻s.AsQueryable())" >
+    <FluentDataGrid Items="@(社員打刻s.AsQueryable())">
         <PropertyColumn Property="@(p => p.Id)" Sortable="true" />
         <PropertyColumn Property="@(p => p.社員番号)" Sortable="true" />
         <PropertyColumn Property="@(p => p.打刻時間)" Sortable="true" />
         <PropertyColumn Property="@(p => p.備考)" Sortable="true" />
 
         <TemplateColumn Title="削除">
-            <FluentButton OnClick="()=>打刻削除(context.Id)" >削除</FluentButton>
+            <FluentButton OnClick="()=>打刻削除(context.Id)">削除</FluentButton>
         </TemplateColumn>
+    </FluentDataGrid>
 
-
+    <FluentDataGrid Items="@(社員カードs.AsQueryable())">
+        <PropertyColumn Property="@(p => p.カードUID)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.カード名称)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.追加日)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.備考)" Sortable="true" />
     </FluentDataGrid>
 }
 
@@ -67,11 +71,12 @@ else
     [Parameter]
     public int id { get; set; }
 
-    private 社員 社員 { get; set; }
+    private 社員 社員 { get; set; } = null!;
 
     private DateTime 打刻時間 { get; set; } = DateTime.Now;
 
     private IList<社員打刻> 社員打刻s { get; set; } = new List<社員打刻>();
+    private IList<社員カード> 社員カードs { get; set; } = new List<社員カード>();
 
 
     protected override async Task OnInitializedAsync()
@@ -79,6 +84,7 @@ else
         try
         {
             var 社員 = await 社員Repository.GetByIdAsync(id);
+
 
             if (社員 is not null)
             {
@@ -88,6 +94,10 @@ else
             {
                 throw new Exception("社員が存在しない。");
             }
+
+            await 打刻リストの更新();
+            await 社員カードリストの更新();
+
 
             カード読み取りService.社員id = id;
             カード読み取りService.読み取り時の処理 = カード読み取りService.読み取り時の処理Code.社員マスタ登録;
@@ -111,8 +121,12 @@ else
 
     private async Task 打刻リストの更新()
     {
-        社員打刻s = await 社員打刻Repository.GetBy社員番号Async(社員.社員番号); 
+        社員打刻s = await 社員打刻Repository.GetBy社員番号Async(社員.社員番号);
+    }
 
+    private async Task 社員カードリストの更新()
+    {
+        社員カードs = await 社員カードRepository.GetBy社員番号Async(社員.社員番号);
     }
 
     private async Task 戻るボタン()
