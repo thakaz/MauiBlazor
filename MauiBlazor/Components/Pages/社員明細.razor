@@ -3,6 +3,9 @@
 @inject 打刻Service 打刻Service
 @inject I社員打刻Repository 社員打刻Repository
 @inject I社員Repository 社員Repository
+@inject カード読み取りService カード読み取りService
+
+@implements IDisposable
 
 @using Microsoft.FluentUI.AspNetCore.Components
 
@@ -73,8 +76,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine($"id: {id}");
-
         try
         {
             var 社員 = await 社員Repository.GetByIdAsync(id);
@@ -87,6 +88,11 @@ else
             {
                 throw new Exception("社員が存在しない。");
             }
+
+            カード読み取りService.社員id = id;
+            カード読み取りService.読み取り時の処理 = カード読み取りService.読み取り時の処理Code.社員マスタ登録;
+
+
         }
         catch (Exception ex)
         {
@@ -120,5 +126,12 @@ else
         await 打刻リストの更新();
     }
 
+    public void Dispose()
+    {
+        Console.WriteLine("Dispose");
+
+        カード読み取りService.社員id = null;
+        カード読み取りService.読み取り時の処理 = カード読み取りService.読み取り時の処理Code.打刻;
+    }
 
 }

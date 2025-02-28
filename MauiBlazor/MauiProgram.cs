@@ -39,11 +39,13 @@ public static class MauiProgram
 
         //各種Serviceの登録
         builder.Services.AddSingleton<打刻Service>();
+        builder.Services.AddSingleton<社員Service>();
         builder.Services.AddSingleton<カード読み取りService>();
 
         //各種Repositoryの登録
         builder.Services.AddScoped<I社員Repository, 社員Repository>();
         builder.Services.AddScoped<I社員打刻Repository, 社員打刻Repository>();
+        builder.Services.AddScoped<I社員カードRepository, 社員カードRepository>();
 
 
 

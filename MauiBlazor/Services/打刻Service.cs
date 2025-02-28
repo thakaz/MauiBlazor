@@ -1,12 +1,6 @@
-﻿using MauiBlazor.Data;
-using MauiBlazor.Data.Repositories;
+﻿using MauiBlazor.Data.Repositories;
 using MauiBlazor.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Intrinsics.Arm;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace MauiBlazor.Services;
 
@@ -34,7 +28,7 @@ public class 打刻Service
         //打刻処理
         if (社員 != null)
         {
-            await 打刻(idm, DateTime.Now);
+            await 打刻(社員.社員番号, DateTime.Now);
         }
         else
         {

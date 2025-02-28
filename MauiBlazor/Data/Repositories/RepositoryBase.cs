@@ -49,7 +49,7 @@ public abstract class RepositoryBase<T> : IRepository<T> where T : class
         return await _context.Set<T>().FindAsync(id);
     }
 
-    public async Task AddAsync(T entity)
+    public virtual async Task AddAsync(T entity)
     {
         using var _context = await _contextFactory.CreateDbContextAsync();
         _context.Set<T>().Add(entity);
