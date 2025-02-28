@@ -1,5 +1,9 @@
-﻿@page "/employeedetail/{社員番号}"
-@inject 出退勤Database db
+﻿@page "/employeedetail/{id:int}"
+
+@inject 打刻Service 打刻Service
+@inject I社員打刻Repository 社員打刻Repository
+@inject I社員Repository 社員Repository
+
 @using Microsoft.FluentUI.AspNetCore.Components
 
 @inject IJSRuntime JSRuntime
@@ -29,7 +33,7 @@ else
                 打刻
             </FluentButton>
 
-            <FluentButton OnClick="Get社員打刻">
+            <FluentButton OnClick="打刻リストの更新">
                 打刻情報取得
             </FluentButton>
 
@@ -58,9 +62,9 @@ else
 
 
     [Parameter]
-    public string 社員番号 { get; set; }
+    public int id { get; set; }
 
-    private 社員? 社員 { get; set; }
+    private 社員 社員 { get; set; }
 
     private DateTime 打刻時間 { get; set; } = DateTime.Now;
 
@@ -69,48 +73,39 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine($"社員番号: {社員番号}");
+        Console.WriteLine($"id: {id}");
 
         try
         {
+            var 社員 = await 社員Repository.GetByIdAsync(id);
 
-            社員 = await db.Get社員Async(社員番号);
-
-
+            if (社員 is not null)
+            {
+                this.社員 = 社員;
+            }
+            else
+            {
+                throw new Exception("社員が存在しない。");
+            }
         }
         catch (Exception ex)
         {
-            await ((Application)app).Windows[0].Page!.DisplayAlert("エラー", "社員が存在しない。", "OK");
+            await ((Application)app).Windows[0].Page!.DisplayAlert("エラー", "社員が存在しない。" + ex.Message, "OK");
         }
     }
 
     private async Task 出勤ボタンクリック()
     {
 
-        //出勤区分を取得
-        var 打刻データ = new 社員打刻
-            {
-                社員番号 = 社員番号,
-                打刻時間 = 打刻時間
-            };
+        await 打刻Service.打刻(社員.社員番号, 打刻時間);
 
-
-        var 周辺打刻 = (await db.Get社員打刻Async(社員番号));
-
-        打刻データ.備考 = 出退勤判定Service.判定(打刻データ, 周辺打刻).ToString();
-
-
-        await db.Add社員打刻Async(打刻データ);
-
-        await Get社員打刻();
+        await 打刻リストの更新();
     }
 
 
-    private async Task Get社員打刻()
+    private async Task 打刻リストの更新()
     {
-        社員打刻s = await db.Get社員打刻Async(社員番号);
-
-
+        社員打刻s = await 社員打刻Repository.GetBy社員番号Async(社員.社員番号); 
 
     }
 
@@ -121,9 +116,8 @@ else
 
     private async Task 打刻削除(int id)
     {
-        await db.Delete社員打刻Async(id);
-        await Get社員打刻();
-
+        await 社員打刻Repository.DeleteAsync(id);
+        await 打刻リストの更新();
     }
 
 

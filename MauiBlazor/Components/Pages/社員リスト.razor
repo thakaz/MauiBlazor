@@ -1,5 +1,5 @@
 ﻿@page "/employeelist"
-@inject 出退勤Database db
+@inject I社員Repository 社員repository
 <h3>社員リスト</h3>
 
 <FluentTextField @bind-Value=社員番号 Label="社員番号"></FluentTextField>
@@ -24,18 +24,15 @@
     private string? 社員番号 { get; set; }
     private string? 名前 { get; set; }
 
-
-
-
     IList<社員> 社員s { get; set; } = new List<社員>();
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            if (db is not null)
+            if (社員repository is not null)
             {
-                社員s = await db.Get社員Async();
+                社員s = (await 社員repository.GetAllAsync()).ToList();
             }
         }
         catch (Exception e)
@@ -45,16 +42,21 @@
 
     }
 
-    async Task 社員追加ボタンクリック時(MouseEventArgs args)
+    private async Task 社員追加ボタンクリック時(MouseEventArgs args)
     {
+        if (string.IsNullOrWhiteSpace(社員番号) || string.IsNullOrWhiteSpace(名前))
+        {
+            return;
+        }
+
         社員s.Add(new 社員 { 社員番号 = 社員番号, 名前 = 名前 });
 
-        await db.Add社員Async(new 社員 { 社員番号 = 社員番号, 名前 = 名前 });
+        await 社員repository.AddAsync(new 社員 { 社員番号 = 社員番号, 名前 = 名前 });
     }
 
-    async Task 社員明細ボタンクリック時(社員 社員)
+    private void 社員明細ボタンクリック時(社員 社員)
     {
-        NavManager.NavigateTo($"employeedetail/{社員.社員番号}");
+        NavManager.NavigateTo($"employeedetail/{社員.Id}");
     }
 
 }

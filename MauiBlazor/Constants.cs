@@ -2,7 +2,8 @@
 
 public static class Constants
 {
-    public const string DatabaseFilename = "TodoSQLite.db3";
+
+    public const string DatabaseFilename = "出退勤DB.db3";
 
     public const SQLite.SQLiteOpenFlags Flags =
         // open the database in read/write mode
@@ -14,4 +15,6 @@ public static class Constants
 
     public static string DatabasePath =>
         Path.Combine(FileSystem.AppDataDirectory, DatabaseFilename);
+
+    
 }

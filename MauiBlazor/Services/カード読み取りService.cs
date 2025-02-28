@@ -5,17 +5,21 @@ using System.Diagnostics;
 
 namespace MauiBlazor.Services;
 
-public class CardReaderService
+public class カード読み取りService
 {
     private readonly IContextFactory _contextFactory;
     private readonly SCardMonitor _cardMonitor;
+    private readonly 打刻Service _打刻Service;
 
-    public CardReaderService(IContextFactory contextFactory)
+    public カード読み取りService(打刻Service 打刻Service)
     {
-        _contextFactory = contextFactory;
+        _contextFactory = ContextFactory.Instance;
+
         _cardMonitor = new SCardMonitor(_contextFactory, SCardScope.System);
         _cardMonitor.CardInserted += CardMonitor_CardInserted;
         _cardMonitor.CardRemoved += CardMonitor_CardRemoved;
+        _打刻Service = 打刻Service;
+
     }
 
     public void StartMonitoring()
@@ -34,7 +38,7 @@ public class CardReaderService
         }
     }
 
-    private void CardMonitor_CardInserted(object sender, CardStatusEventArgs args)
+    private async void CardMonitor_CardInserted(object sender, CardStatusEventArgs args)
     {
         //カードをかざした時の処理
         try
@@ -42,7 +46,6 @@ public class CardReaderService
             using var context = _contextFactory.Establish(SCardScope.System);
             using (var reader = context.ConnectReader(args.ReaderName, SCardShareMode.Shared, SCardProtocol.Any))
             {
-
                 //カードの情報を取得
                 byte[] atr = reader.GetAttrib(SCardAttribute.AtrString);
                 Debug.WriteLine("ATR: {0}", BitConverter.ToString(atr));
@@ -61,6 +64,13 @@ public class CardReaderService
             var response = isoReader.Transmit(apdu);
             Debug.WriteLine("SW1 SW2 = {0:X2} {1:X2}", response.SW1, response.SW2);
             Debug.WriteLine(BitConverter.ToString(response.GetData()));
+
+            //IDm
+            var idm = BitConverter.ToString(response.GetData());
+
+            //ここで取得したIDmを使って何か処理をする。
+            //通常は打刻。社員マスタでICの登録となっている時だけ別の処理
+            await _打刻Service.打刻byIDm(idm);
         }
         catch (Exception ex)
         {

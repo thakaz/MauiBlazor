@@ -1,6 +1,7 @@
 ﻿using MauiBlazor.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +33,7 @@ class 判定ルール
 
 static class 出退勤判定Service
 {
+    static int 一日の開始 = 5;
 
     static 時間区分 時間判定(DateTime 打刻時間)
     {
@@ -68,14 +70,11 @@ static class 出退勤判定Service
         //打刻時間から時間帯を取得
         var target時間帯 = 時間判定(対象打刻データ.打刻時間);
 
-        //一日の開始は5時とする
-        int 一日の開始 = 5;
-
         TimeOnly target打刻時間 = new TimeOnly(対象打刻データ.打刻時間.Hour, 対象打刻データ.打刻時間.Minute, 対象打刻データ.打刻時間.Second)
                                     .AddHours(-一日の開始);
 
         //打刻時間から対象日を取得
-        var target日付 = DateOnly.FromDateTime(対象打刻データ.打刻時間.AddHours(-一日の開始).Date);
+        var target日付 = 打刻日判定(対象打刻データ.打刻時間);
 
         //周辺打刻データから対象日の打刻データを取得
         var target打刻済み = 周辺打刻データ
@@ -95,4 +94,17 @@ static class 出退勤判定Service
 
     }
 
+
+    public static DateOnly 打刻日判定(DateTime 打刻時間)
+    {
+        try
+        {
+            return DateOnly.FromDateTime(打刻時間.AddHours(-一日の開始).Date);
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e.Message);
+            return DateOnly.FromDateTime(DateTime.Now.Date);
+        }
+    }
 }

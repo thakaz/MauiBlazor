@@ -7,14 +7,13 @@ namespace MauiBlazor;
 
 public partial class MainPage : ContentPage
 {
-    private readonly CardReaderService _cardReaderService;
+    private readonly カード読み取りService _cardReaderService;
 
-    public MainPage()
+    public MainPage(カード読み取りService cardReaderService)
     {
         InitializeComponent();
 
-        var contextFactory = ContextFactory.Instance;
-        _cardReaderService = new CardReaderService(contextFactory);
+        _cardReaderService = cardReaderService;
         _cardReaderService.StartMonitoring();
     }
 }
