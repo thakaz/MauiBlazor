@@ -3,6 +3,10 @@ using PCSC.Iso7816;
 using PCSC.Monitoring;
 using System.Diagnostics;
 
+using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Alerts;
+
 namespace MauiBlazor.Services;
 
 public class カード読み取りService
@@ -90,6 +94,7 @@ public class カード読み取りService
                     return;
                 }
                 await _社員Service.カードの登録(idm,社員id??0);
+
             }
             else
             {

@@ -1,0 +1,24 @@
+﻿@inject BlazorToastService BlazorToastService
+@inject IToastService FluentToastService
+
+@implements IDisposable
+
+
+@code {
+    
+    protected override void OnInitialized()
+    {
+        BlazorToastService.OnShowToast += ShowToast;
+    }
+
+    private void ShowToast(ToastIntent intent , string message)
+    {
+        FluentToastService.ShowToast(intent, message);
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        BlazorToastService.OnShowToast -= ShowToast;
+    }
+}

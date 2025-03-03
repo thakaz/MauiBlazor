@@ -3,6 +3,8 @@ using PCSC;
 using MauiBlazor.Services;
 using System.Diagnostics;
 
+using Microsoft.Maui.Dispatching;
+
 namespace MauiBlazor;
 
 public partial class MainPage : ContentPage
@@ -15,5 +17,7 @@ public partial class MainPage : ContentPage
 
         _cardReaderService = cardReaderService;
         _cardReaderService.StartMonitoring();
+
     }
+
 }

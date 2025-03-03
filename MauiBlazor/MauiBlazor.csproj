@@ -93,4 +93,8 @@
       <None Include="C:\Users\n-miura\source\repos\MauiBlazor\MauiBlazor\.editorconfig" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Components\Shared\Buttons\" />
+    </ItemGroup>
+
 </Project>

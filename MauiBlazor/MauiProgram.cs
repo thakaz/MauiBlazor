@@ -20,7 +20,10 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
             })
-            .UseMauiCommunityToolkit();
+  .UseMauiCommunityToolkit(options =>
+  {
+      options.SetShouldEnableSnackbarOnWindows(true);
+  });
 
         builder.Services.AddMauiBlazorWebView();
         builder.Services.AddFluentUIComponents();
@@ -30,7 +33,7 @@ public static class MauiProgram
         {
             //いったんDBパスを明示的に
             string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "出退勤.db");
-           // string dbPath = Path.Combine(FileSystem.AppDataDirectory, "出退勤.db");
+            // string dbPath = Path.Combine(FileSystem.AppDataDirectory, "出退勤.db");
             options.UseSqlite($"Data Source={dbPath}");
 
             //options.UseSqlite(Constants.DatabasePath);
@@ -47,6 +50,10 @@ public static class MauiProgram
         builder.Services.AddScoped<I社員打刻Repository, 社員打刻Repository>();
         builder.Services.AddScoped<I社員カードRepository, 社員カードRepository>();
 
+
+        //通知用
+        builder.Services.AddSingleton<BlazorToastService>();
+        builder.Services.AddSingleton<I通知Service, 通知Service>();
 
 
 #if DEBUG

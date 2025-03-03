@@ -1,5 +1,6 @@
 ﻿using MauiBlazor.Data.Repositories;
 using MauiBlazor.Models;
+using Microsoft.FluentUI.AspNetCore.Components;
 
 
 namespace MauiBlazor.Services;
@@ -8,11 +9,13 @@ public class 打刻Service
 {
     I社員Repository _社員Repository;
     I社員打刻Repository _社員打刻Repository;
+    I通知Service _通知Service;
 
-    public 打刻Service(I社員Repository 社員Repository, I社員打刻Repository 社員打刻Repository)
+    public 打刻Service(I社員Repository 社員Repository, I社員打刻Repository 社員打刻Repository,I通知Service 通知Service)
     {
         _社員Repository = 社員Repository;
         _社員打刻Repository = 社員打刻Repository;
+        _通知Service = 通知Service;
     }
 
     public async Task 打刻byIDm(string idm)
@@ -58,6 +61,8 @@ public class 打刻Service
         打刻データ.備考 = 出退勤判定Service.判定(打刻データ, 周辺打刻).ToString();
 
         await _社員打刻Repository.AddAsync(打刻データ);
+
+        _通知Service.ShowToast(ToastIntent.Success, "打刻しました"+ $"{社員番号} {dateTime}");
 
     }
 
