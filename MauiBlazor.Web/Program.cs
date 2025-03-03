@@ -39,6 +39,9 @@ builder.Services.AddSingleton<I通知Service, Web通知Service>();
 builder.Services.AddScoped<IDisplayAlert, WebDisplayAlert>();
 
 
+builder.Services.AddSingleton<天気Service>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

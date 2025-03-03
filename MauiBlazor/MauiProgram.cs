@@ -58,6 +58,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<I通知Service, 通知Service>();
         builder.Services.AddSingleton<IDisplayAlert, MauiDisplayAlert>();
 
+        builder.Services.AddSingleton<天気Service>();
+
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
