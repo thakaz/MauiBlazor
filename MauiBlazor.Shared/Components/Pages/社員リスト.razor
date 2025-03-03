@@ -69,7 +69,7 @@
     private async Task 社員削除ボタンクリック時(社員 社員)
     {
         //一応警告メッセージ
-        var result = await ((Application)app).Windows[0].Page!.DisplayAlert("削除", "削除しますか？", "OK", "キャンセル");
+        var result = await DisplayAlert.ShowAlertAsync("削除", "削除しますか？", "OK","キャンセル");
 
         if (!result)
         {

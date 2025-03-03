@@ -9,6 +9,6 @@ Welcome to your new app.
 @code{
     private async Task ClickMe()
     {
-        await ((Application)app).Windows[0].Page!.DisplayAlert("クリック","クリックされました。" , "OK");
+        await DisplayAlert.ShowAlertAsync("クリック", "クリックされました。", "OK");
     }
 }

@@ -1,10 +1,9 @@
-﻿using MauiBlazor.Models;
+﻿using MauiBlazor.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
 using Microsoft.EntityFrameworkCore.Design;
-using System.IO;
 
-
+namespace MauiBlazor.Shared.Data;
 
 public class 出退勤DbContextFactory : IDesignTimeDbContextFactory<出退勤DbContext>
 {
@@ -17,8 +16,6 @@ public class 出退勤DbContextFactory : IDesignTimeDbContextFactory<出退勤Db
         return new 出退勤DbContext(optionsBuilder.Options);
     }
 }
-
-
 
 
 public partial class 出退勤DbContext : DbContext

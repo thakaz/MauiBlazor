@@ -4,14 +4,15 @@ using MauiBlazor.Services;
 using System.Diagnostics;
 
 using Microsoft.Maui.Dispatching;
+using MauiBlazor.Shared.Services;
 
 namespace MauiBlazor;
 
 public partial class MainPage : ContentPage
 {
-    private readonly カード読み取りService _cardReaderService;
+    private readonly Iカード読み取りService _cardReaderService;
 
-    public MainPage(カード読み取りService cardReaderService)
+    public MainPage(Iカード読み取りService cardReaderService)
     {
         InitializeComponent();
 

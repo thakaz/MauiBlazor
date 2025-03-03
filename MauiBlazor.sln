@@ -5,6 +5,8 @@ VisualStudioVersion = 17.13.35818.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiBlazor", "MauiBlazor\MauiBlazor.csproj", "{621D982D-7394-49A8-9D35-438E3DC81CC2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiBlazor.Shared", "MauiBlazor.Shared\MauiBlazor.Shared.csproj", "{9E9AB285-19B9-4091-B729-03A1FFA65E00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,18 @@ Global
 		{621D982D-7394-49A8-9D35-438E3DC81CC2}.Release|x64.Build.0 = Release|Any CPU
 		{621D982D-7394-49A8-9D35-438E3DC81CC2}.Release|x86.ActiveCfg = Release|Any CPU
 		{621D982D-7394-49A8-9D35-438E3DC81CC2}.Release|x86.Build.0 = Release|Any CPU
+		{9E9AB285-19B9-4091-B729-03A1FFA65E00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E9AB285-19B9-4091-B729-03A1FFA65E00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E9AB285-19B9-4091-B729-03A1FFA65E00}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9E9AB285-19B9-4091-B729-03A1FFA65E00}.Debug|x64.Build.0 = Debug|Any CPU
+		{9E9AB285-19B9-4091-B729-03A1FFA65E00}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9E9AB285-19B9-4091-B729-03A1FFA65E00}.Debug|x86.Build.0 = Debug|Any CPU
+		{9E9AB285-19B9-4091-B729-03A1FFA65E00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E9AB285-19B9-4091-B729-03A1FFA65E00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E9AB285-19B9-4091-B729-03A1FFA65E00}.Release|x64.ActiveCfg = Release|Any CPU
+		{9E9AB285-19B9-4091-B729-03A1FFA65E00}.Release|x64.Build.0 = Release|Any CPU
+		{9E9AB285-19B9-4091-B729-03A1FFA65E00}.Release|x86.ActiveCfg = Release|Any CPU
+		{9E9AB285-19B9-4091-B729-03A1FFA65E00}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

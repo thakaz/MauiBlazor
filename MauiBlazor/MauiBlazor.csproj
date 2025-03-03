@@ -94,7 +94,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\MauiBlazor.Shared\MauiBlazor.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Folder Include="Components\Shared\Buttons\" />
+      <Folder Include="Components\Shared\Parts\" />
     </ItemGroup>
 
 </Project>

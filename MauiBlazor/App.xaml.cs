@@ -1,12 +1,12 @@
-﻿using MauiBlazor.Services;
+﻿using MauiBlazor.Shared.Services;
 
 namespace MauiBlazor
 {
     public partial class App : Application
     {
-        private readonly カード読み取りService _cardReaderService;
+        private readonly Iカード読み取りService _cardReaderService;
 
-        public App(カード読み取りService cardReaderService)
+        public App(Iカード読み取りService cardReaderService)
         {
             InitializeComponent();
             _cardReaderService = cardReaderService;

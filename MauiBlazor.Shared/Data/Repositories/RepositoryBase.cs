@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace MauiBlazor.Data.Repositories.Base;
+namespace MauiBlazor.Shared.Data.Repositories.Base;
 
 
 /// <summary>

@@ -1,9 +1,8 @@
-﻿using MauiBlazor.Data.Repositories.Base;
-using MauiBlazor.Models;
+﻿using MauiBlazor.Shared.Data.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
+using MauiBlazor.Shared.Models;
 
-
-namespace MauiBlazor.Data.Repositories;
+namespace MauiBlazor.Shared.Data.Repositories;
 
 public interface I社員打刻Repository : IRepository<社員打刻>
 {
@@ -24,7 +23,9 @@ public class 社員打刻Repository : RepositoryBase<社員打刻>, I社員打�
     public async Task<List<社員打刻>> GetBy社員番号Async(string 社員番号)
     {
         using var _context = await _contextFactory.CreateDbContextAsync();
-        return await _context.Set<社員打刻>().Where(x=>x.社員番号 == 社員番号).ToListAsync();
+        return await _context.Set<社員打刻>().Where(x=>x.社員番号 == 社員番号)
+            .OrderByDescending(x=>x.Id)
+            .ToListAsync();
 
     }
 

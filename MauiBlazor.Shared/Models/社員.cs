@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MauiBlazor.Models;
+namespace MauiBlazor.Shared.Models;
 
 public class 社員
 {

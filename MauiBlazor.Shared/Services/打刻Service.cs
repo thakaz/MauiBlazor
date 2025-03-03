@@ -1,9 +1,9 @@
-﻿using MauiBlazor.Data.Repositories;
-using MauiBlazor.Models;
+﻿using MauiBlazor.Shared.Data.Repositories;
+using MauiBlazor.Shared.Models;
 using Microsoft.FluentUI.AspNetCore.Components;
 
 
-namespace MauiBlazor.Services;
+namespace MauiBlazor.Shared.Services;
 
 public class 打刻Service
 {

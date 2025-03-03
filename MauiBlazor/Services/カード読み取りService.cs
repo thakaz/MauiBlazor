@@ -2,25 +2,16 @@
 using PCSC.Iso7816;
 using PCSC.Monitoring;
 using System.Diagnostics;
-
-using CommunityToolkit.Maui;
-using CommunityToolkit.Maui.Core;
-using CommunityToolkit.Maui.Alerts;
-
+using MauiBlazor.Shared.Services;
+     
 namespace MauiBlazor.Services;
 
-public class カード読み取りService
+public class カード読み取りService : Iカード読み取りService
 {
     private readonly IContextFactory _contextFactory;
     private readonly SCardMonitor _cardMonitor;
     private readonly 打刻Service _打刻Service;
     private readonly 社員Service _社員Service;
-
-    public enum 読み取り時の処理Code
-    {
-        打刻,
-        社員マスタ登録
-    }
 
     public 読み取り時の処理Code 読み取り時の処理 { get; set; } = 読み取り時の処理Code.打刻;
     public int? 社員id { get; set; } = null;

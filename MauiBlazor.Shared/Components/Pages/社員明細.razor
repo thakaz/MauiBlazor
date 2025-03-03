@@ -4,7 +4,7 @@
 @inject I社員カードRepository 社員カードRepository
 @inject I社員打刻Repository 社員打刻Repository
 @inject I社員Repository 社員Repository
-@inject カード読み取りService カード読み取りService
+@inject Iカード読み取りService カード読み取りService
 @inject IJSRuntime JSRuntime
 
 @implements IDisposable
@@ -100,13 +100,13 @@ else
 
 
             カード読み取りService.社員id = id;
-            カード読み取りService.読み取り時の処理 = カード読み取りService.読み取り時の処理Code.社員マスタ登録;
+            カード読み取りService.読み取り時の処理 = 読み取り時の処理Code.社員マスタ登録;
 
 
         }
         catch (Exception ex)
         {
-            await ((Application)app).Windows[0].Page!.DisplayAlert("エラー", "社員が存在しない。" + ex.Message, "OK");
+            await DisplayAlert.ShowAlertAsync("エラー", "社員が存在しない。" + ex.Message, "OK");
         }
     }
 
@@ -145,7 +145,7 @@ else
         Console.WriteLine("Dispose");
 
         カード読み取りService.社員id = null;
-        カード読み取りService.読み取り時の処理 = カード読み取りService.読み取り時の処理Code.打刻;
+        カード読み取りService.読み取り時の処理 = 読み取り時の処理Code.打刻;
     }
 
 }

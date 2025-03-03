@@ -1,11 +1,13 @@
 ﻿using CommunityToolkit.Maui;
-using MauiBlazor.Data;
-using MauiBlazor.Data.Repositories;
+using MauiBlazor.Shared.Data;
+using MauiBlazor.Shared.Data.Repositories;
+using MauiBlazor.Shared.Services;
 using MauiBlazor.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Plugin.Maui.Audio;
+
 
 namespace MauiBlazor;
 
@@ -43,7 +45,7 @@ public static class MauiProgram
         //各種Serviceの登録
         builder.Services.AddSingleton<打刻Service>();
         builder.Services.AddSingleton<社員Service>();
-        builder.Services.AddSingleton<カード読み取りService>();
+        builder.Services.AddSingleton<Iカード読み取りService, カード読み取りService>();
 
         //各種Repositoryの登録
         builder.Services.AddScoped<I社員Repository, 社員Repository>();
@@ -54,6 +56,7 @@ public static class MauiProgram
         //通知用
         builder.Services.AddSingleton<BlazorToastService>();
         builder.Services.AddSingleton<I通知Service, 通知Service>();
+        builder.Services.AddSingleton<IDisplayAlert, MauiDisplayAlert>();
 
 
 #if DEBUG
