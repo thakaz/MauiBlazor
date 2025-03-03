@@ -2,26 +2,22 @@ using MauiBlazor.Shared.Data;
 using MauiBlazor.Shared.Data.Repositories;
 using MauiBlazor.Shared.Services;
 using MauiBlazor.Web.Components;
-using MauiBlazor.Web.Client.Services;
+using MauiBlazor.Web.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
-using MauiBlazor.Web.Services;
-
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
-//var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveWebAssemblyComponents();
+    .AddInteractiveServerComponents();
+
 
 builder.Services.AddFluentUIComponents();
 builder.Services.AddDbContextFactory<出退勤DbContext>(options =>
 {
     //いったんDBパスを明示的に
-    string dbPath = Path.Combine("C:\\src", "出退勤.db");
-    //string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "出退勤.db");
+    string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "出退勤.db");
     // string dbPath = Path.Combine(FileSystem.AppDataDirectory, "出退勤.db");
     options.UseSqlite($"Data Source={dbPath}");
 });
@@ -42,28 +38,22 @@ builder.Services.AddSingleton<BlazorToastService>();
 builder.Services.AddSingleton<I通知Service, Web通知Service>();
 builder.Services.AddScoped<IDisplayAlert, WebDisplayAlert>();
 
-//フォームファクタ
-builder.Services.AddSingleton<IFormFactor, FormFactor>();
-
-
-//await builder.Build().RunAsync();
 
 var app = builder.Build();
 
-
+// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
 }
 
+
 app.UseAntiforgery();
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
-    .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(
-    typeof(MauiBlazor.Shared.Components._Imports).Assembly,
-    typeof(MauiBlazor.Web.Client._Imports).Assembly
-    );
+    .AddInteractiveServerRenderMode()
+    .AddAdditionalAssemblies(typeof(MauiBlazor.Shared.Components._Imports).Assembly);
 
 app.Run();
+

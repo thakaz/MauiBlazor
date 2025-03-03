@@ -56,10 +56,9 @@
             return;
         }
 
-        社員 追加社員 =  await 社員repository.AddAsync(new 社員 { 社員番号 = 社員番号, 名前 = 名前 });
+        社員s.Add(new 社員 { 社員番号 = 社員番号, 名前 = 名前 });
 
-        社員s.Add(追加社員);
-
+        await 社員repository.AddAsync(new 社員 { 社員番号 = 社員番号, 名前 = 名前 });
     }
 
     private void 社員明細ボタンクリック時(社員 社員)

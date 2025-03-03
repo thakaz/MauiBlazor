@@ -1,20 +1,14 @@
 ﻿@page "/"
-@inject IFormFactor FormFactor
-
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app running on <em>@factor</em> using <em>@platform</em>.
+Welcome to your new app.
 
-<FluentButton Text="Click me" OnClick="ClickMe">アラートメッセージ</FluentButton>
+<FluentButton Text="Click me" OnClick="ClickMe" >アラートメッセージ</FluentButton>
 
-@code {
+@code{
     private async Task ClickMe()
     {
         await DisplayAlert.ShowAlertAsync("クリック", "クリックされました。", "OK");
     }
-
-    private string factor => FormFactor.GetFormFactor();
-    private string platform => FormFactor.GetPlatform();
-
 }
