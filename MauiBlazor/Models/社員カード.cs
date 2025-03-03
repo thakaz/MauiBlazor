@@ -12,6 +12,8 @@ public class 社員カード
 
     public string? カード名称 { get; set; }
     public string? 備考 { get; set; }
+    
+    public DateTime 追加日 { get; set; }= DateTime.Now;
 
-    public  社員 社員 { get; set; }
+    public required  社員 社員 { get; set; }
 }

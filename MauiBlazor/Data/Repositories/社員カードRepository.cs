@@ -8,6 +8,7 @@ namespace MauiBlazor.Data.Repositories;
 public interface I社員カードRepository : IRepository<社員カード>
 {
     Task<社員カード?> GetByカードUIDAsync(string カードUID);
+    Task<IList<社員カード>> GetBy社員番号Async(string 社員番号);
 }
 
 public class 社員カードRepository : RepositoryBase<社員カード>, I社員カードRepository
@@ -36,5 +37,12 @@ public class 社員カードRepository : RepositoryBase<社員カード>, I社�
         await _context.SaveChangesAsync();
     }
 
+    public async Task<IList<社員カード>> GetBy社員番号Async(string 社員番号)
+    {
+        using var _context = await _contextFactory.CreateDbContextAsync();
 
+        return await _context.Set<社員カード>().Where(x => x.社員.社員番号 == 社員番号)
+            .OrderByDescending(x => x.追加日)
+            .ToListAsync();
+    }
 }
