@@ -8,15 +8,22 @@
 
 @if (社員s.Count > 0)
 {
-    foreach (var 社員 in 社員s)
-    {
-        <FluentStack Style="border: 1px dotted var(--accent-fill-rest)">
-            <div class="demopanel">@社員.社員番号</div>
-            <div class="demopanel">@社員.名前</div>
-            <FluentButton OnClick="()=>社員明細ボタンクリック時(社員)">明細</FluentButton>
-        </FluentStack>
-    }
 
+
+        <FluentDataGrid Items="@(社員s.AsQueryable())">
+            <PropertyColumn Property="@(p => p.Id)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.社員番号)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.名前)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.入社年度)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.備考)" Sortable="true" />
+        <TemplateColumn Title="明細">
+            <FluentButton OnClick="()=>社員明細ボタンクリック時(context)">明細</FluentButton>
+        </TemplateColumn>
+
+            <TemplateColumn Title="削除">
+            <FluentButton OnClick="()=>社員削除ボタンクリック時(context)">削除</FluentButton>
+            </TemplateColumn>
+        </FluentDataGrid>
 }
 
 @code {
@@ -57,6 +64,23 @@
     private void 社員明細ボタンクリック時(社員 社員)
     {
         NavManager.NavigateTo($"employeedetail/{社員.Id}");
+    }
+
+    private async Task 社員削除ボタンクリック時(社員 社員)
+    {
+        //一応警告メッセージ
+        var result = await ((Application)app).Windows[0].Page!.DisplayAlert("削除", "削除しますか？", "OK", "キャンセル");
+
+        if (!result)
+        {
+            return;
+        }
+
+        if (社員 is not null)
+        {
+            社員s.Remove(社員);
+            await 社員repository.DeleteAsync(社員.Id);
+        }
     }
 
 }
