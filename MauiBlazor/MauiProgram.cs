@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Maui;
+using MauiBlazor.Services;
 using MauiBlazor.Shared.Data;
 using MauiBlazor.Shared.Data.Repositories;
 using MauiBlazor.Shared.Services;
-using MauiBlazor.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;

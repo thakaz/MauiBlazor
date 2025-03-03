@@ -1,8 +1,4 @@
-﻿using MauiBlazor.Shared.Data.Repositories;
-using MauiBlazor.Shared.Models;
-using Microsoft.FluentUI.AspNetCore.Components;
-
-namespace MauiBlazor.Shared.Services;
+﻿namespace MauiBlazor.Shared.Services;
 
 
 public class 社員Service

@@ -1,9 +1,4 @@
-﻿using MauiBlazor.Shared.Data.Repositories;
-using MauiBlazor.Shared.Models;
-using Microsoft.FluentUI.AspNetCore.Components;
-
-
-namespace MauiBlazor.Shared.Services;
+﻿namespace MauiBlazor.Shared.Services;
 
 public class 打刻Service
 {
@@ -11,7 +6,7 @@ public class 打刻Service
     I社員打刻Repository _社員打刻Repository;
     I通知Service _通知Service;
 
-    public 打刻Service(I社員Repository 社員Repository, I社員打刻Repository 社員打刻Repository,I通知Service 通知Service)
+    public 打刻Service(I社員Repository 社員Repository, I社員打刻Repository 社員打刻Repository, I通知Service 通知Service)
     {
         _社員Repository = 社員Repository;
         _社員打刻Repository = 社員打刻Repository;
@@ -62,7 +57,7 @@ public class 打刻Service
 
         await _社員打刻Repository.AddAsync(打刻データ);
 
-        _通知Service.ShowToast(ToastIntent.Success, "打刻しました"+ $"{社員番号} {dateTime}");
+        _通知Service.ShowToast(ToastIntent.Success, "打刻しました" + $"{社員番号} {dateTime}");
 
     }
 

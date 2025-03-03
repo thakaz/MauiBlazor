@@ -1,9 +1,4 @@
-﻿using MauiBlazor.Shared.Data.Repositories.Base;
-using MauiBlazor.Shared.Models;
-using Microsoft.EntityFrameworkCore;
-
-
-namespace MauiBlazor.Shared.Data.Repositories;
+﻿namespace MauiBlazor.Shared.Data.Repositories;
 
 public interface I社員カードRepository : IRepository<社員カード>
 {

@@ -1,9 +1,9 @@
-﻿using PCSC;
+﻿using MauiBlazor.Shared.Services;
+using PCSC;
 using PCSC.Iso7816;
 using PCSC.Monitoring;
 using System.Diagnostics;
-using MauiBlazor.Shared.Services;
-     
+
 namespace MauiBlazor.Services;
 
 public class カード読み取りService : Iカード読み取りService
@@ -16,7 +16,7 @@ public class カード読み取りService : Iカード読み取りService
     public 読み取り時の処理Code 読み取り時の処理 { get; set; } = 読み取り時の処理Code.打刻;
     public int? 社員id { get; set; } = null;
 
-    public カード読み取りService(打刻Service 打刻Service,社員Service 社員Service)
+    public カード読み取りService(打刻Service 打刻Service, 社員Service 社員Service)
     {
         _contextFactory = ContextFactory.Instance;
 
@@ -79,12 +79,12 @@ public class カード読み取りService : Iカード読み取りService
 
             if (読み取り時の処理 == 読み取り時の処理Code.社員マスタ登録)
             {
-                if(社員id == null)
+                if (社員id == null)
                 {
                     Debug.WriteLine("社員IDが指定されていません。");
                     return;
                 }
-                await _社員Service.カードの登録(idm,社員id??0);
+                await _社員Service.カードの登録(idm, 社員id ?? 0);
 
             }
             else

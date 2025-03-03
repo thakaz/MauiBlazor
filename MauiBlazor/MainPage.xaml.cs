@@ -1,10 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Internal;
-using PCSC;
-using MauiBlazor.Services;
-using System.Diagnostics;
-
-using Microsoft.Maui.Dispatching;
-using MauiBlazor.Shared.Services;
+﻿using MauiBlazor.Shared.Services;
 
 namespace MauiBlazor;
 

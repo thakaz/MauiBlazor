@@ -3,7 +3,7 @@
 public interface Iカード読み取りService
 {
     public 読み取り時の処理Code 読み取り時の処理 { get; set; }
-    public int? 社員id { get; set; } 
+    public int? 社員id { get; set; }
 
     void StartMonitoring();
 }

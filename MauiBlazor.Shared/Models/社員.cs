@@ -4,7 +4,7 @@ namespace MauiBlazor.Shared.Models;
 
 public class 社員
 {
-    [Key] 
+    [Key]
     public int Id { get; set; }
 
     [Required]

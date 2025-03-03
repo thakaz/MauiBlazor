@@ -1,7 +1,4 @@
-﻿using MauiBlazor.Shared.Models;
-using Microsoft.EntityFrameworkCore;
-
-using Microsoft.EntityFrameworkCore.Design;
+﻿using Microsoft.EntityFrameworkCore.Design;
 
 namespace MauiBlazor.Shared.Data;
 

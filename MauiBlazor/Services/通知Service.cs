@@ -1,13 +1,10 @@
-﻿using CommunityToolkit.Maui.Core;
-using CommunityToolkit.Maui.Alerts;
+﻿using MauiBlazor.Shared.Services;
 using Microsoft.FluentUI.AspNetCore.Components;
-using Npgsql.Replication.PgOutput.Messages;
-using MauiBlazor.Shared.Services;
 
 
 namespace MauiBlazor.Services;
 
-public  class 通知Service : I通知Service
+public class 通知Service : I通知Service
 {
 
     private readonly BlazorToastService _blazorToastService;
