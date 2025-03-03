@@ -22,7 +22,7 @@ public class 社員カードRepository : RepositoryBase<社員カード>, I社�
         return await _context.Set<社員カード>().FirstOrDefaultAsync(x => x.カードUID == カードUID);
     }
 
-    public override async Task AddAsync(社員カード entity)
+    public override async Task<社員カード> AddAsync(社員カード entity)
     {
         using var _context = await _contextFactory.CreateDbContextAsync();
 
@@ -30,6 +30,7 @@ public class 社員カードRepository : RepositoryBase<社員カード>, I社�
 
         _context.Set<社員カード>().Add(entity);
         await _context.SaveChangesAsync();
+        return entity;
     }
 
     public async Task<IList<社員カード>> GetBy社員番号Async(string 社員番号)

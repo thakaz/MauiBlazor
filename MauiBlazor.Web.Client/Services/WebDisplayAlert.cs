@@ -2,9 +2,9 @@
 using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace MauiBlazor.Web.Services;
+namespace MauiBlazor.Web.Client.Services;
 
-class WebDisplayAlert : IDisplayAlert
+public class WebDisplayAlert : IDisplayAlert
 {
 
     private readonly IJSRuntime _jsRuntime;

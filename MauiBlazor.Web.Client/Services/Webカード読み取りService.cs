@@ -1,6 +1,6 @@
 ﻿using MauiBlazor.Shared.Services;
 
-namespace MauiBlazor.Web.Services;
+namespace MauiBlazor.Web.Client.Services;
 
 public class Webカード読み取りService : Iカード読み取りService
 {

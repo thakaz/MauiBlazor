@@ -10,7 +10,7 @@ public interface IRepository<T> where T : class
     Task<IEnumerable<T>> GetAllAsync();
     Task<T?> GetByIdAsync(int id);
     Task<T?> GetByIdAsync(CompositeKey id);
-    Task AddAsync(T entity);
+    Task<T?> AddAsync(T entity);
     Task UpdateAsync(T entity);
     Task DeleteAsync(int id);
     Task DeleteAsync(CompositeKey id);
@@ -47,11 +47,14 @@ public abstract class RepositoryBase<T> : IRepository<T> where T : class
         return await _context.Set<T>().FindAsync(id);
     }
 
-    public virtual async Task AddAsync(T entity)
+    public virtual async Task<T> AddAsync(T entity)
     {
         using var _context = await _contextFactory.CreateDbContextAsync();
         _context.Set<T>().Add(entity);
         await _context.SaveChangesAsync();
+
+        // エンティティのIDを返す
+        return entity;
     }
 
     public async Task UpdateAsync(T entity)

@@ -7,7 +7,9 @@ public class 出退勤DbContextFactory : IDesignTimeDbContextFactory<出退勤Db
     public 出退勤DbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<出退勤DbContext>();
-        string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "出退勤.db");
+
+        string dbPath = Path.Combine("C:\\src", "出退勤.db");
+        //string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "出退勤.db");
         optionsBuilder.UseSqlite($"Data Source={dbPath}");
 
         return new 出退勤DbContext(optionsBuilder.Options);

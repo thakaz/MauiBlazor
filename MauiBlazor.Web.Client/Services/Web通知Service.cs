@@ -2,7 +2,7 @@
 using Microsoft.FluentUI.AspNetCore.Components;
 
 
-namespace MauiBlazor.Web.Services;
+namespace MauiBlazor.Web.Client.Services;
 
 public class Web通知Service : I通知Service
 {

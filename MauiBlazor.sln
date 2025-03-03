@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiBlazor.Shared", "MauiBl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiBlazor.Web", "MauiBlazor.Web\MauiBlazor.Web.csproj", "{F9C61D36-342A-4165-A874-C5365C6E3DF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiBlazor.Web.Client", "MauiBlazor.Web.Client\MauiBlazor.Web.Client.csproj", "{342982CD-8EB5-4001-A8BE-BBAF2F75DD99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,7 @@ Global
 		{621D982D-7394-49A8-9D35-438E3DC81CC2}.Debug|x86.Build.0 = Debug|Any CPU
 		{621D982D-7394-49A8-9D35-438E3DC81CC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{621D982D-7394-49A8-9D35-438E3DC81CC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{621D982D-7394-49A8-9D35-438E3DC81CC2}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{621D982D-7394-49A8-9D35-438E3DC81CC2}.Release|x64.ActiveCfg = Release|Any CPU
 		{621D982D-7394-49A8-9D35-438E3DC81CC2}.Release|x64.Build.0 = Release|Any CPU
 		{621D982D-7394-49A8-9D35-438E3DC81CC2}.Release|x86.ActiveCfg = Release|Any CPU
@@ -56,6 +59,18 @@ Global
 		{F9C61D36-342A-4165-A874-C5365C6E3DF7}.Release|x64.Build.0 = Release|Any CPU
 		{F9C61D36-342A-4165-A874-C5365C6E3DF7}.Release|x86.ActiveCfg = Release|Any CPU
 		{F9C61D36-342A-4165-A874-C5365C6E3DF7}.Release|x86.Build.0 = Release|Any CPU
+		{342982CD-8EB5-4001-A8BE-BBAF2F75DD99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{342982CD-8EB5-4001-A8BE-BBAF2F75DD99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{342982CD-8EB5-4001-A8BE-BBAF2F75DD99}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{342982CD-8EB5-4001-A8BE-BBAF2F75DD99}.Debug|x64.Build.0 = Debug|Any CPU
+		{342982CD-8EB5-4001-A8BE-BBAF2F75DD99}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{342982CD-8EB5-4001-A8BE-BBAF2F75DD99}.Debug|x86.Build.0 = Debug|Any CPU
+		{342982CD-8EB5-4001-A8BE-BBAF2F75DD99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{342982CD-8EB5-4001-A8BE-BBAF2F75DD99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{342982CD-8EB5-4001-A8BE-BBAF2F75DD99}.Release|x64.ActiveCfg = Release|Any CPU
+		{342982CD-8EB5-4001-A8BE-BBAF2F75DD99}.Release|x64.Build.0 = Release|Any CPU
+		{342982CD-8EB5-4001-A8BE-BBAF2F75DD99}.Release|x86.ActiveCfg = Release|Any CPU
+		{342982CD-8EB5-4001-A8BE-BBAF2F75DD99}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
