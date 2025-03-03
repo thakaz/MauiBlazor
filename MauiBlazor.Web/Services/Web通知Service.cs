@@ -6,9 +6,17 @@ namespace MauiBlazor.Web.Services;
 
 public class Web通知Service : I通知Service
 {
+    private readonly BlazorToastService _blazorToastService;
+
+
+    public Web通知Service(BlazorToastService blazorToastService)
+    {
+        _blazorToastService = blazorToastService;
+    }
+
     public void ShowToast(ToastIntent intent, string message)
     {
-        //ひとまず何もしない
+        _blazorToastService.ShowToast(intent, message);
     }
 
 }

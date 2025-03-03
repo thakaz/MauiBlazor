@@ -36,7 +36,7 @@ builder.Services.AddScoped<I社員カードRepository, 社員カードRepository>();
 //通知用
 builder.Services.AddSingleton<BlazorToastService>();
 builder.Services.AddSingleton<I通知Service, Web通知Service>();
-builder.Services.AddSingleton<IDisplayAlert, WebDisplayAlert>();
+builder.Services.AddScoped<IDisplayAlert, WebDisplayAlert>();
 
 
 var app = builder.Build();
