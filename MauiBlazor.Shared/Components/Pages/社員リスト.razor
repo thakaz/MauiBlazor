@@ -10,20 +10,20 @@
 {
 
 
-        <FluentDataGrid Items="@(社員s.AsQueryable())">
-            <PropertyColumn Property="@(p => p.Id)" Sortable="true" />
-            <PropertyColumn Property="@(p => p.社員番号)" Sortable="true" />
-            <PropertyColumn Property="@(p => p.名前)" Sortable="true" />
-            <PropertyColumn Property="@(p => p.入社年度)" Sortable="true" />
-            <PropertyColumn Property="@(p => p.備考)" Sortable="true" />
+    <FluentDataGrid Items="@(社員s.AsQueryable())">
+        <PropertyColumn Property="@(p => p.Id)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.社員番号)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.名前)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.入社年度)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.備考)" Sortable="true" />
         <TemplateColumn Title="明細">
-            <FluentButton OnClick="()=>社員明細ボタンクリック時(context)">明細</FluentButton>
+            <FluentButton OnClick="() => 社員明細ボタンクリック時(context)">明細</FluentButton>
         </TemplateColumn>
 
-            <TemplateColumn Title="削除">
-            <FluentButton OnClick="()=>社員削除ボタンクリック時(context)">削除</FluentButton>
-            </TemplateColumn>
-        </FluentDataGrid>
+        <TemplateColumn Title="削除">
+            <FluentButton OnClick="() => 社員削除ボタンクリック時(context)">削除</FluentButton>
+        </TemplateColumn>
+    </FluentDataGrid>
 }
 
 @code {
@@ -51,15 +51,21 @@
 
     private async Task 社員追加ボタンクリック時(MouseEventArgs args)
     {
-        if (string.IsNullOrWhiteSpace(社員番号) || string.IsNullOrWhiteSpace(名前))
+        try
         {
-            return;
+            if (string.IsNullOrWhiteSpace(社員番号) || string.IsNullOrWhiteSpace(名前))
+            {
+                return;
+            }
+
+            var new社員 = await 社員repository.AddAsync(new 社員 { 社員番号 = 社員番号, 名前 = 名前 });
+            社員s.Add(new社員);
         }
-
-        社員 追加社員 =  await 社員repository.AddAsync(new 社員 { 社員番号 = 社員番号, 名前 = 名前 });
-
-        社員s.Add(追加社員);
-
+        catch (Exception e)
+        {
+            await DisplayAlert.ShowAlertAsync("エラー", e.Message  + e.InnerException, "OK");
+            
+        }
     }
 
     private void 社員明細ボタンクリック時(社員 社員)
@@ -70,7 +76,7 @@
     private async Task 社員削除ボタンクリック時(社員 社員)
     {
         //一応警告メッセージ
-        var result = await DisplayAlert.ShowAlertAsync("削除", "削除しますか？", "OK","キャンセル");
+        var result = await DisplayAlert.ShowAlertAsync("削除", "削除しますか？", "OK", "キャンセル");
 
         if (!result)
         {

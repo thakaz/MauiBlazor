@@ -1,0 +1,24 @@
+﻿@page "/config"
+
+@inject 天気Service 天気Service
+
+<h3>設定</h3>
+
+天気情報
+<FluentTextField @bind-Value=天気Service.都市名 Label="天気場所"></FluentTextField>
+APIキー
+<FluentTextField @bind-Value=天気Service.APIキー Label="APIキー"></FluentTextField>
+
+<FluentButton OnClick="天気取得">天気取得</FluentButton>
+
+@天気情報
+
+@code {
+    public string 天気情報 { get; set; } = "";
+    private async Task 天気取得()
+    {
+        天気情報 = "";
+        天気情報= await 天気Service.Get天気Async();
+    }
+
+}

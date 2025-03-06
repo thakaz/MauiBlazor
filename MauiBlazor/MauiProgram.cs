@@ -34,8 +34,7 @@ public static class MauiProgram
         builder.Services.AddDbContextFactory<出退勤DbContext>(options =>
         {
             //いったんDBパスを明示的に
-            string dbPath = Path.Combine("C:\\src", "出退勤.db");
-            //string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "出退勤.db");
+            string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "出退勤.db");
             // string dbPath = Path.Combine(FileSystem.AppDataDirectory, "出退勤.db");
             options.UseSqlite($"Data Source={dbPath}");
 
@@ -59,8 +58,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<I通知Service, 通知Service>();
         builder.Services.AddSingleton<IDisplayAlert, MauiDisplayAlert>();
 
-        //フォームファクタ
-        builder.Services.AddSingleton<IFormFactor, FormFactor>();
+        builder.Services.AddSingleton<天気Service>();
+
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
