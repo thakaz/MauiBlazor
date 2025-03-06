@@ -6,6 +6,9 @@
 @inject I社員Repository 社員Repository
 @inject Iカード読み取りService カード読み取りService
 @inject IJSRuntime JSRuntime
+@inject I通知Service 通知Service
+
+@using System.Text
 
 @implements IDisposable
 
@@ -45,6 +48,15 @@ else
 
     </FluentStack>
 
+    <FluentCalendar View="CalendarViews.Months" @bind-Value="@SelectedMonth" @bind-PickerMonth="@PickerMonth" Style="height: 250px;" />
+    <p>Selected @(SelectedMonth?.ToString("yyyy-MM-dd"))</p>
+    <p>Panel @(PickerMonth.ToString("yyyy-MM-dd"))</p>
+    <FluentButton onclick="()=>SelectedMonth=null">日付リセット</FluentButton>
+
+
+
+    <FluentButton OnClick="csvの出力">csvの出力</FluentButton>
+
 
     <FluentDataGrid Items="@(社員打刻s.AsQueryable())">
         <PropertyColumn Property="@(p => p.Id)" Sortable="true" />
@@ -77,6 +89,9 @@ else
 
     private IList<社員打刻> 社員打刻s { get; set; } = new List<社員打刻>();
     private IList<社員カード> 社員カードs { get; set; } = new List<社員カード>();
+
+    private DateTime? SelectedMonth = null;
+    private DateTime PickerMonth = DateTime.Today;
 
 
     protected override async Task OnInitializedAsync()
@@ -146,6 +161,24 @@ else
 
         カード読み取りService.社員id = null;
         カード読み取りService.読み取り時の処理 = 読み取り時の処理Code.打刻;
+    }
+
+
+    private async Task csvの出力()
+    {
+        if (SelectedMonth is null)
+        {
+            await DisplayAlert.ShowAlertAsync("エラー", "月度を選択してください。", "OK");
+            return;
+        }
+
+        社員打刻s= await 社員打刻Repository.GetBy社員番号And月度Async(社員.社員番号, DateOnly.FromDateTime(SelectedMonth.Value));
+
+        var csvFilePath = CSVService.WriteCSV(社員打刻s);
+
+        // ファイルをダウンロード
+        await FileUtils.SaveFile(csvFilePath, new CancellationToken(), 通知Service);
+
     }
 
 }
