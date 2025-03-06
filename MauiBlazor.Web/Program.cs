@@ -1,8 +1,10 @@
 using MauiBlazor.Shared.Data;
 using MauiBlazor.Shared.Data.Repositories;
 using MauiBlazor.Shared.Services;
+using MauiBlazor.Shared.Utils;
 using MauiBlazor.Web.Components;
 using MauiBlazor.Web.Services;
+using MauiBlazor.Web.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
 
@@ -37,6 +39,7 @@ builder.Services.AddScoped<I社員カードRepository, 社員カードRepository>();
 builder.Services.AddSingleton<BlazorToastService>();
 builder.Services.AddSingleton<I通知Service, Web通知Service>();
 builder.Services.AddScoped<IDisplayAlert, WebDisplayAlert>();
+builder.Services.AddSingleton<IFileUtils, WebFileUtils>();
 
 
 builder.Services.AddSingleton<天気Service>();

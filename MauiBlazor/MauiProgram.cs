@@ -3,6 +3,8 @@ using MauiBlazor.Services;
 using MauiBlazor.Shared.Data;
 using MauiBlazor.Shared.Data.Repositories;
 using MauiBlazor.Shared.Services;
+using MauiBlazor.Shared.Utils;
+using MauiBlazor.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
@@ -57,6 +59,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<BlazorToastService>();
         builder.Services.AddSingleton<I通知Service, 通知Service>();
         builder.Services.AddSingleton<IDisplayAlert, MauiDisplayAlert>();
+        builder.Services.AddSingleton<IFileUtils, MAUIFileUtils>();
+
 
         builder.Services.AddSingleton<天気Service>();
 
