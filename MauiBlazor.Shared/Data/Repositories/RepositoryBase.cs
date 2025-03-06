@@ -47,18 +47,28 @@ public abstract class RepositoryBase<T> : IRepository<T> where T : class
         return await _context.Set<T>().FindAsync(id);
     }
 
-    public virtual async Task<T> AddAsync(T entity)
+    public virtual async Task<T?> AddAsync(T entity)
     {
+        if (entity == null)
+        {
+            throw new ArgumentNullException(nameof(entity), "Entity cannot be null");
+        }
+
         using var _context = await _contextFactory.CreateDbContextAsync();
         _context.Set<T>().Add(entity);
         await _context.SaveChangesAsync();
 
-        // エンティティのIDを返す
+        // エンティティ本体を返す
         return entity;
     }
 
     public async Task UpdateAsync(T entity)
     {
+        if (entity == null)
+        {
+            throw new ArgumentNullException(nameof(entity), "Entity cannot be null");
+        }
+
         using var _context = await _contextFactory.CreateDbContextAsync();
         _context.Set<T>().Update(entity);
         await _context.SaveChangesAsync();
@@ -68,11 +78,13 @@ public abstract class RepositoryBase<T> : IRepository<T> where T : class
     {
         using var _context = await _contextFactory.CreateDbContextAsync();
         var entity = await _context.Set<T>().FindAsync(id);
-        if (entity != null)
+        if (entity == null)
         {
-            _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();
+            throw new KeyNotFoundException($"Entity with id {id} not found");
         }
+
+        _context.Set<T>().Remove(entity);
+        await _context.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(CompositeKey id)
