@@ -1,13 +1,5 @@
 ﻿@page "/employeedetail/{id:int}"
 
-@inject 打刻Service 打刻Service
-@inject I社員カードRepository 社員カードRepository
-@inject I社員打刻Repository 社員打刻Repository
-@inject I社員Repository 社員Repository
-@inject Iカード読み取りService カード読み取りService
-@inject IJSRuntime JSRuntime
-@inject I通知Service 通知Service
-
 @using System.Text
 
 @implements IDisposable
@@ -177,8 +169,7 @@ else
         var csvFilePath = CSVService.WriteCSV(社員打刻s);
 
         // ファイルをダウンロード
-        await FileUtils.SaveFile(csvFilePath, new CancellationToken(), 通知Service);
-
+        await fileUtils.SaveFileAsync(csvFilePath, new CancellationToken(),"打刻データ.csv");
     }
 
 }

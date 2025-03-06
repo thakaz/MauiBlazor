@@ -39,7 +39,7 @@ builder.Services.AddScoped<I社員カードRepository, 社員カードRepository>();
 builder.Services.AddSingleton<BlazorToastService>();
 builder.Services.AddSingleton<I通知Service, Web通知Service>();
 builder.Services.AddScoped<IDisplayAlert, WebDisplayAlert>();
-builder.Services.AddSingleton<IFileUtils, WebFileUtils>();
+builder.Services.AddScoped<IFileUtils, WebFileUtils>();
 
 
 builder.Services.AddSingleton<天気Service>();
