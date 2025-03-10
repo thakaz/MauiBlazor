@@ -46,6 +46,7 @@ else
     <FluentButton onclick="()=>SelectedMonth=null">日付リセット</FluentButton>
 
 
+    <FluentButton OnClick="メモ追加">メモ追加</FluentButton>
 
     <FluentButton OnClick="csvの出力">csvの出力</FluentButton>
 
@@ -68,6 +69,7 @@ else
         <PropertyColumn Property="@(p => p.備考)" Sortable="true" />
     </FluentDataGrid>
 }
+
 
 @code {
 
@@ -170,6 +172,30 @@ else
 
         // ファイルをダウンロード
         await fileUtils.SaveFileAsync(csvFilePath, new CancellationToken(),"打刻データ.csv");
+    }
+
+    private async Task メモ追加()
+    {
+        DialogParameters parameters = new()
+            {
+                Title = $" 社員情報の編集",
+                PrimaryAction = "決定",
+                PrimaryActionEnabled = true,
+                SecondaryAction = "キャンセル",
+                Width = "500px",
+                TrapFocus = true,
+                Modal = true,
+                PreventScroll = true
+            };
+
+
+        var target社員 = await 社員Repository.GetBy社員番号WithRelatedAsync(社員.社員番号);
+
+        IDialogReference dialog = await DialogService.ShowDialogAsync<SimpleDialog>(target社員, parameters);
+        DialogResult? result = await dialog.Result;
+
+        await 社員Repository.UpdateAsync(target社員);
+        await DisplayAlert.ShowAlertAsync("メモ追加", "メモ追加", "OK");
     }
 
 }

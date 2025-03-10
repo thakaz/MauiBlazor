@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Plugin.Maui.Audio;
+using MauiBlazor.Shared;
 
 
 namespace MauiBlazor;
@@ -35,10 +36,10 @@ public static class MauiProgram
 
         builder.Services.AddDbContextFactory<出退勤DbContext>(options =>
         {
-            //いったんDBパスを明示的に
-            string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "出退勤.db");
             // string dbPath = Path.Combine(FileSystem.AppDataDirectory, "出退勤.db");
-            options.UseSqlite($"Data Source={dbPath}");
+            //options.UseSqlite($"Data Source={dbPath}");
+
+            options.UseNpgsql(Constants.ConnectionString);
 
             //options.UseSqlite(Constants.DatabasePath);
 

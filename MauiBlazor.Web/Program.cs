@@ -1,3 +1,4 @@
+using MauiBlazor.Shared;
 using MauiBlazor.Shared.Data;
 using MauiBlazor.Shared.Data.Repositories;
 using MauiBlazor.Shared.Services;
@@ -19,9 +20,11 @@ builder.Services.AddFluentUIComponents();
 builder.Services.AddDbContextFactory<出退勤DbContext>(options =>
 {
     //いったんDBパスを明示的に
-    string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "出退勤.db");
+    //string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "出退勤.db");
     // string dbPath = Path.Combine(FileSystem.AppDataDirectory, "出退勤.db");
-    options.UseSqlite($"Data Source={dbPath}");
+    // options.UseSqlite($"Data Source={dbPath}");
+
+    options.UseNpgsql(Constants.ConnectionString);
 });
 
 //各種Serviceの登録

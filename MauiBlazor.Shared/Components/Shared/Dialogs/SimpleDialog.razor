@@ -1,0 +1,54 @@
+﻿@implements IDialogContentComponent<社員>
+
+<p>社員設定</p>
+
+<FluentTextField @bind-Value="@Content.社員番号">社員番号:</FluentTextField>
+<FluentTextField @bind-Value="@Content.名前">名前:</FluentTextField>
+<FluentNumberField @bind-Value="@Content.入社年度">入社年度:</FluentNumberField>
+<FluentTextField @bind-Value="@Content.備考">備考:</FluentTextField>
+
+<FluentTextField @bind-value="@Content.社員設定.通知先メールアドレス">通知先メールアドレス:</FluentTextField>
+
+<!-- 社員メモの編集フォームを追加 -->
+<p>社員メモ</p>
+
+@if (Content.社員設定.メモ != null)
+{
+    @foreach (var memo in Content.社員設定.メモ)
+    {
+        <FluentTextField @bind-Value="memo.タイトル">タイトル:</FluentTextField>
+        <FluentTextField @bind-Value="memo.本文">本文:</FluentTextField>
+    }
+}
+<FluentButton OnClick="AddMemo">メモを追加</FluentButton>
+
+@if (Dialog != null)
+{
+    @*
+    <FluentStack Orientation="Orientation.Vertical" Style="border: 1px solid red; padding: 10px">
+        <FluentButton OnClick="@(() => ToggleDialogPrimaryActionButton(false))">ボタン</FluentButton>
+    </FluentStack>
+    *@
+}
+
+@code {
+    [Parameter]
+    public 社員 Content { get; set; } = default!;
+
+    [CascadingParameter]
+    public FluentDialog? Dialog { get; set; }
+
+    private void ToggleDialogPrimaryActionButton(bool enable)
+    {
+        Dialog!.TogglePrimaryActionButton(enable);
+    }
+
+    private void AddMemo()
+    {
+        if(Content.社員設定.メモ == null)
+        {
+            Content.社員設定.メモ = new();
+        }
+        Content.社員設定.メモ.Add(new 社員メモ() { 社員設定 = Content.社員設定 });
+    }
+}

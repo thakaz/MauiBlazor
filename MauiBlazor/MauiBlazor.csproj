@@ -72,17 +72,15 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.11.5" />
-        <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.DataGrid.EntityFrameworkAdapter" Version="4.11.5" />
+        <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.11.6" />
+        <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.DataGrid.EntityFrameworkAdapter" Version="4.11.6" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.40" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="9.0.40" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
         <PackageReference Include="Npgsql" Version="9.0.3" />
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.3" />
         <PackageReference Include="PCSC" Version="7.0.0" />
         <PackageReference Include="PCSC.Iso7816" Version="7.0.0" />
         <PackageReference Include="Plugin.Maui.Audio" Version="3.0.1" />
-        <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
     </ItemGroup>
 
     <ItemGroup>
