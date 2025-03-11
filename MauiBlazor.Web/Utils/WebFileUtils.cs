@@ -1,6 +1,4 @@
-﻿using MauiBlazor.Shared.Services;
-using MauiBlazor.Shared.Utils;
-using Microsoft.FluentUI.AspNetCore.Components;
+﻿using MauiBlazor.Shared.Utils;
 using Microsoft.JSInterop;
 
 namespace MauiBlazor.Web.Utils;
@@ -25,6 +23,6 @@ public class WebFileUtils : IFileUtils
         using var streamRef = new DotNetStreamReference(fileStream);
         return await _jsRuntime.InvokeAsync<string>("downloadFileFromStream", defaultFileName, streamRef);
 
-        
+
     }
 }

@@ -1,0 +1,36 @@
+﻿
+@inject I組織Repository 組織Repository
+
+@page "/login"
+
+<h3>ログイン</h3>
+
+@if (_showLoginError)
+{
+    <p>ログインに失敗しました。</p>
+}
+
+<FluentTextField Label="組織コード" @bind-Value=組織コード />
+<FluentTextField Label="パスワード" @bind-Value=password TextFieldType="TextFieldType.Password" />
+<FluentButton OnClick="Login">ログイン</FluentButton>
+
+@code {
+    private string 組織コード { get; set; } = "";
+    private string password { get; set; } = "";
+    private bool _showLoginError;
+    private async Task Login()
+    {
+
+        var loginResult = await AuthenticationStateProvider.ValidateLogin(組織コード, password);
+        if (loginResult)
+        {
+            NavManager.NavigateTo("/");
+        }
+        else
+        {
+            _showLoginError = true;
+        }
+    }
+
+
+}

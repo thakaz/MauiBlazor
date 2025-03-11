@@ -3,6 +3,7 @@ using System;
 using MauiBlazor.Shared.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MauiBlazor.Shared.Migrations
 {
     [DbContext(typeof(出退勤DbContext))]
-    partial class 出退勤DbContextModelSnapshot : ModelSnapshot
+    [Migration("20250311063446_組織とか追加")]
+    partial class 組織とか追加
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,15 +74,10 @@ namespace MauiBlazor.Shared.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("組織Id")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("社員番号")
                         .IsUnique();
-
-                    b.HasIndex("組織Id");
 
                     b.ToTable("社員s");
                 });
@@ -222,15 +220,6 @@ namespace MauiBlazor.Shared.Migrations
                         .HasForeignKey("組織Id");
                 });
 
-            modelBuilder.Entity("MauiBlazor.Shared.Models.社員", b =>
-                {
-                    b.HasOne("MauiBlazor.Shared.Models.組織", "組織")
-                        .WithMany("社員")
-                        .HasForeignKey("組織Id");
-
-                    b.Navigation("組織");
-                });
-
             modelBuilder.Entity("MauiBlazor.Shared.Models.社員カード", b =>
                 {
                     b.HasOne("MauiBlazor.Shared.Models.社員", "社員")
@@ -281,8 +270,6 @@ namespace MauiBlazor.Shared.Migrations
             modelBuilder.Entity("MauiBlazor.Shared.Models.組織", b =>
                 {
                     b.Navigation("グループ");
-
-                    b.Navigation("社員");
                 });
 #pragma warning restore 612, 618
         }

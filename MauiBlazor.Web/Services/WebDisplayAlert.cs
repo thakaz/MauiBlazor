@@ -1,5 +1,4 @@
 ﻿using MauiBlazor.Shared.Services;
-using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace MauiBlazor.Web.Services;

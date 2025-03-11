@@ -18,6 +18,11 @@ public class 社員
     public IList<社員カード> 社員カード { get; } = new List<社員カード>();
 
     public 社員設定? 社員設定 { get; set; } = new();
+
+    public IList<グループ> グループ { get; } = new List<グループ>();
+
+    public 組織? 組織 { get; set; }
+    public int? 組織Id { get; set; }
 }
 
 public class 社員設定

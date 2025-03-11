@@ -1,5 +1,6 @@
 ﻿@page "/employeelist"
-@inject I社員Repository 社員repository
+@attribute [Authorize]
+
 <h3>社員リスト</h3>
 
 <FluentTextField @bind-Value=社員番号 Label="社員番号"></FluentTextField>
@@ -31,16 +32,22 @@
     private string? 社員番号 { get; set; }
     private string? 名前 { get; set; }
 
+    private string? 組織コード { get; set; }
+    private 組織? my組織 { get; set; }
+
     IList<社員> 社員s { get; set; } = new List<社員>();
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            if (社員repository is not null)
-            {
-                社員s = (await 社員repository.GetAllAsync()).ToList();
-            }
+            //組織コードを取得
+            組織コード = AuthenticationStateProvider.Get組織コード();
+
+            my組織 = await 組織Repository.GetBy組織コードAsync(組織コード);
+
+            社員s = (await 社員Repository.Get組織メンバーAsync(組織コード)).ToList();
+
         }
         catch (Exception e)
         {
@@ -58,13 +65,13 @@
                 return;
             }
 
-            var new社員 = await 社員repository.AddAsync(new 社員 { 社員番号 = 社員番号, 名前 = 名前  });
+            var new社員 = await 社員Repository.AddAsync(new 社員 { 社員番号 = 社員番号, 名前 = 名前, 組織Id = my組織.Id });
             社員s.Add(new社員);
         }
         catch (Exception e)
         {
-            await DisplayAlert.ShowAlertAsync("エラー", e.Message  + e.InnerException, "OK");
-            
+            await DisplayAlert.ShowAlertAsync("エラー", e.Message + e.InnerException, "OK");
+
         }
     }
 
@@ -86,7 +93,7 @@
         if (社員 is not null)
         {
             社員s.Remove(社員);
-            await 社員repository.DeleteAsync(社員.Id);
+            await 社員Repository.DeleteAsync(社員.Id);
         }
     }
 

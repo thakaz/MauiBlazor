@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MauiBlazor.Shared.Utils;
+﻿namespace MauiBlazor.Shared.Utils;
 
 public static class DateUtils
 {
@@ -74,8 +68,8 @@ public static class DateUtils
     //月度の範囲を返す
     public static (DateOnly firstDay, DateOnly lastDay) GetMonthRange(DateOnly date)
     {
-        var firstDay = new DateOnly(date.Year, date.Month-1, 16);
-        var lastDay = new DateOnly(date.Year, date.Month , 15);
+        var firstDay = new DateOnly(date.Year, date.Month - 1, 16);
+        var lastDay = new DateOnly(date.Year, date.Month, 15);
         return (firstDay, lastDay);
     }
 }

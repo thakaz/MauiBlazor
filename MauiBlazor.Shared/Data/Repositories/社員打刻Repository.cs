@@ -32,7 +32,7 @@ public class 社員打刻Repository : RepositoryBase<社員打刻>, I社員打�
         var 月度範囲 = DateUtils.GetMonthRange(月度);
 
         using var _context = await _contextFactory.CreateDbContextAsync();
-        return await _context.Set<社員打刻>().Where(x => x.社員番号 == 社員番号 && x.打刻日>= 月度範囲.firstDay&& x.打刻日<= 月度範囲.lastDay)
+        return await _context.Set<社員打刻>().Where(x => x.社員番号 == 社員番号 && x.打刻日 >= 月度範囲.firstDay && x.打刻日 <= 月度範囲.lastDay)
             .OrderBy(x => x.Id)
             .ToListAsync();
     }

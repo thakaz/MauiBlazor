@@ -29,6 +29,8 @@ public partial class 出退勤DbContext : DbContext
     public virtual DbSet<社員打刻> 社員打刻s { get; set; } = null!;
     public virtual DbSet<社員設定> 社員設定s { get; set; } = null!;
     public virtual DbSet<社員メモ> 社員メモs { get; set; } = null!;
+    public virtual DbSet<グループ> グループs { get; set; } = null!;
+    public virtual DbSet<組織> 組織s { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

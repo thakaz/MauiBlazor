@@ -1,11 +1,14 @@
-using MauiBlazor.Shared;
+ï»¿using MauiBlazor.Shared;
 using MauiBlazor.Shared.Data;
 using MauiBlazor.Shared.Data.Repositories;
+using MauiBlazor.Shared.Helper.Auth;
 using MauiBlazor.Shared.Services;
 using MauiBlazor.Shared.Utils;
 using MauiBlazor.Web.Components;
 using MauiBlazor.Web.Services;
 using MauiBlazor.Web.Utils;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
 
@@ -17,35 +20,48 @@ builder.Services.AddRazorComponents()
 
 
 builder.Services.AddFluentUIComponents();
-builder.Services.AddDbContextFactory<o‘Ş‹ÎDbContext>(options =>
+builder.Services.AddDbContextFactory<å‡ºé€€å‹¤DbContext>(options =>
 {
-    //‚¢‚Á‚½‚ñDBƒpƒX‚ğ–¾¦“I‚É
-    //string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "o‘Ş‹Î.db");
-    // string dbPath = Path.Combine(FileSystem.AppDataDirectory, "o‘Ş‹Î.db");
+    //ã„ã£ãŸã‚“DBãƒ‘ã‚¹ã‚’æ˜ç¤ºçš„ã«
+    //string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "å‡ºé€€å‹¤.db");
+    // string dbPath = Path.Combine(FileSystem.AppDataDirectory, "å‡ºé€€å‹¤.db");
     // options.UseSqlite($"Data Source={dbPath}");
 
     options.UseNpgsql(Constants.ConnectionString);
 });
 
-//ŠeíService‚Ì“o˜^
-builder.Services.AddScoped<‘ÅService>();
-builder.Services.AddScoped<ĞˆõService>();
-builder.Services.AddScoped<IƒJ[ƒh“Ç‚İæ‚èService, WebƒJ[ƒh“Ç‚İæ‚èService>();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login";
+        options.SlidingExpiration = true;
+    });
 
-//ŠeíRepository‚Ì“o˜^
-builder.Services.AddScoped<IĞˆõRepository, ĞˆõRepository>();
-builder.Services.AddScoped<IĞˆõ‘ÅRepository, Ğˆõ‘ÅRepository>();
-builder.Services.AddScoped<IĞˆõƒJ[ƒhRepository, ĞˆõƒJ[ƒhRepository>();
+builder.Services.AddAuthorization();
+
+//å„ç¨®Serviceã®ç™»éŒ²
+builder.Services.AddScoped<æ‰“åˆ»Service>();
+builder.Services.AddScoped<ç¤¾å“¡Service>();
+builder.Services.AddScoped<Iã‚«ãƒ¼ãƒ‰èª­ã¿å–ã‚ŠService, Webã‚«ãƒ¼ãƒ‰èª­ã¿å–ã‚ŠService>();
+
+//å„ç¨®Repositoryã®ç™»éŒ²
+builder.Services.AddScoped<Iç¤¾å“¡Repository, ç¤¾å“¡Repository>();
+builder.Services.AddScoped<Iç¤¾å“¡æ‰“åˆ»Repository, ç¤¾å“¡æ‰“åˆ»Repository>();
+builder.Services.AddScoped<Iç¤¾å“¡ã‚«ãƒ¼ãƒ‰Repository, ç¤¾å“¡ã‚«ãƒ¼ãƒ‰Repository>();
+builder.Services.AddScoped<Içµ„ç¹”Repository, çµ„ç¹”Repository>();
 
 
-//’Ê’m—p
+//é€šçŸ¥ç”¨
 builder.Services.AddSingleton<BlazorToastService>();
-builder.Services.AddSingleton<I’Ê’mService, Web’Ê’mService>();
+builder.Services.AddSingleton<Ié€šçŸ¥Service, Webé€šçŸ¥Service>();
 builder.Services.AddScoped<IDisplayAlert, WebDisplayAlert>();
 builder.Services.AddScoped<IFileUtils, WebFileUtils>();
 
 
-builder.Services.AddSingleton<“V‹CService>();
+builder.Services.AddScoped<MyAuthenticationStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<MyAuthenticationStateProvider>());
+
+builder.Services.AddSingleton<å¤©æ°—Service>();
 
 
 var app = builder.Build();
@@ -58,6 +74,9 @@ if (!app.Environment.IsDevelopment())
 
 
 app.UseAntiforgery();
+
+app.UseAuthentication(); // èªè¨¼ãƒŸãƒ‰ãƒ«ã‚¦ã‚§ã‚¢ã‚’è¿½åŠ 
+app.UseAuthorization(); // èªå¯ãƒŸãƒ‰ãƒ«ã‚¦ã‚§ã‚¢ã‚’è¿½åŠ 
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
