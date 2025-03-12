@@ -5,9 +5,10 @@
 
 <h3>ログイン</h3>
 
-@if (_showLoginError)
+@if (_loginErrorMessage !="")
 {
-    <p>ログインに失敗しました。</p>
+    <p>@_loginErrorMessage</p>
+
 }
 
 <FluentTextField Label="組織コード" @bind-Value=組織コード />
@@ -17,20 +18,15 @@
 @code {
     private string 組織コード { get; set; } = "";
     private string password { get; set; } = "";
-    private bool _showLoginError;
+    private string _loginErrorMessage="";
     private async Task Login()
     {
 
-        var loginResult = await AuthenticationStateProvider.ValidateLogin(組織コード, password);
-        if (loginResult)
+        (var isSuccess, _loginErrorMessage) = await AuthenticationStateProvider.ValidateLogin(組織コード, password);
+        if (isSuccess)
         {
             NavManager.NavigateTo("/");
         }
-        else
-        {
-            _showLoginError = true;
-        }
     }
-
 
 }

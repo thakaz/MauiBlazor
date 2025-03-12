@@ -47,21 +47,25 @@ public class MyAuthenticationStateProvider : AuthenticationStateProvider
         }
     }
 
-    public async Task<bool> ValidateLogin(string 組織コード, string password)
+    public async Task<(bool isSuccess, string errorMessage)> ValidateLogin(string 組織コード, string password)
     {
-        //ひとまず組織にログイン
-        var 組織 = await _組織Repository.GetBy組織コードAsync(組織コード) ?? throw new Exception("組織が見つかりませんでした");
-
-        //組織のパスワードと入力されたパスワードが一致するか
-        if (組織.パスワード == password)
+        // ひとまず組織にログイン
+        var 組織 = await _組織Repository.GetBy組織コードAsync(組織コード);
+        if (組織 == null)
         {
-            NotifyUserAuthentication(組織.組織コード);
-            return true;
+            return (false, "組織が見つかりませんでした");
         }
 
-        return false;
+        // 組織のパスワードと入力されたパスワードが一致するか
+        if (PasswordHasher.VerifyPassword(password,組織.パスワード ?? ""))
+        {
+            NotifyUserAuthentication(組織.組織コード);
+            return (true, string.Empty);
+        }
 
+        return (false, "パスワードが正しくありません");
     }
+
 
     public void NotifyUserAuthentication(string 組織コード)
     {

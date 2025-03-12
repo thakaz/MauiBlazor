@@ -22,6 +22,7 @@
 
 
 カード読み取りサービス: @(カード読み取りService.IsMonitoring ? "動作中" : "停止中")
+<FluentButton OnClick="()=>カード読み取りService.LoadCardReader()">カードの再読み込み</FluentButton>
 
 
 @code{

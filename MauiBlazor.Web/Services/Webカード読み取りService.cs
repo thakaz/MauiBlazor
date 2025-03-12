@@ -10,6 +10,12 @@ public class Webカード読み取りService : Iカード読み取りService
 
     public bool IsMonitoring => false;
 
+    public bool LoadCardReader()
+    {
+        //Web側では何もしない。
+        return IsMonitoring;
+    }
+
     public bool StartMonitoring()
     {
         //Web側では何もしない。

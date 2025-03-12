@@ -9,7 +9,7 @@ namespace MauiBlazor.Services;
 public class カード読み取りService : Iカード読み取りService
 {
     private readonly IContextFactory _contextFactory;
-    private readonly ISCardMonitor? _cardMonitor;
+    private  ISCardMonitor? _cardMonitor;
     private readonly 打刻Service _打刻Service;
     private readonly 社員Service _社員Service;
 
@@ -25,19 +25,28 @@ public class カード読み取りService : Iカード読み取りService
         _社員Service = 社員Service;
 
         _contextFactory = ContextFactory.Instance;
+
+        LoadCardReader();
+
+    }
+
+    //カードリーダーの読み込みを開始
+    public bool LoadCardReader()
+    {
         try
         {
             _cardMonitor = new SCardMonitor(_contextFactory, SCardScope.System);
             _cardMonitor.CardInserted += CardMonitor_CardInserted;
             _cardMonitor.CardRemoved += CardMonitor_CardRemoved;
+            return IsMonitoring;
         }
         catch (Exception ex)
         {
             _cardMonitor = null;
             Debug.WriteLine(ex.Message);
+            return false;
         }
     }
-
 
     public bool StartMonitoring()
     {

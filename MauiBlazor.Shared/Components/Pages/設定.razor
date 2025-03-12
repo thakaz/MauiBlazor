@@ -13,12 +13,67 @@ APIキー
 
 @天気情報
 
+
+
+組織一覧
+<FluentTextField @bind-Value=new組織コード Label="組織コード"></FluentTextField>
+<FluentTextField @bind-Value=new組織名 Label="組織名"></FluentTextField>
+<FluentTextField @bind-Value=newパスワード Label="パスワード"></FluentTextField>
+
+<FluentButton OnClick="組織追加ボタンクリック時">組織追加</FluentButton>
+<FluentDataGrid Items="@(組織s.AsQueryable())">
+    <PropertyColumn Property="@(p => p.Id)" Sortable="true" />
+    <PropertyColumn Property="@(p => p.組織コード)" Sortable="true" />
+    <PropertyColumn Property="@(p => p.組織名)" Sortable="true" />
+    <PropertyColumn Property="@(p => p.パスワード)" Sortable="true" />
+    <TemplateColumn Title="削除">
+        <FluentButton OnClick="() => 組織削除ボタンクリック時(context)">削除</FluentButton>
+    </TemplateColumn>
+</FluentDataGrid>
+
+
+
 @code {
     public string 天気情報 { get; set; } = "";
     private async Task 天気取得()
     {
         天気情報 = "";
-        天気情報= await 天気Service.Get天気Async();
+        天気情報 = await 天気Service.Get天気Async();
+    }
+
+    private IEnumerable<組織> 組織s { get; set; } = new List<組織>();
+
+    private string new組織コード { get; set; } = "";
+    private string new組織名 { get; set; } = "";
+    private string newパスワード { get; set; } = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        組織s = await 組織Repository.GetAllAsync();
+    }
+
+    private async Task 組織削除ボタンクリック時(組織 組織)
+    {
+        await 組織Repository.DeleteAsync(組織.Id);
+        組織s = await 組織Repository.GetAllAsync();
+    }
+
+    private async Task 組織追加ボタンクリック時(MouseEventArgs args)
+    {
+
+        var hashedPassword = PasswordHasher.HashPassword(newパスワード);
+        var 組織 = new 組織
+            {
+                組織コード = new組織コード,
+                組織名 = new組織名,
+                パスワード = hashedPassword
+            };
+
+        await 組織Repository.AddAsync(組織);
+
+        組織s = await 組織Repository.GetAllAsync();
+
+
     }
 
 }
