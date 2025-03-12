@@ -1,0 +1,15 @@
+﻿このページを表示する権限がありません。
+<br />
+1秒後にリダイレクトします。
+<FluentProgress></FluentProgress>
+@* 3秒後にリダイレクト *@
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Task.Delay(1000);
+            NavManager.NavigateTo("/login");
+        }
+    }
+}

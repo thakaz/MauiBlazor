@@ -5,7 +5,10 @@ public interface Iカード読み取りService
     public 読み取り時の処理Code 読み取り時の処理 { get; set; }
     public int? 社員id { get; set; }
 
-    void StartMonitoring();
+    //カードリーダーが稼働中か
+    public bool IsMonitoring { get; }
+
+    bool StartMonitoring();
 }
 
 public enum 読み取り時の処理Code

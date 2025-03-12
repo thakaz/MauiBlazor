@@ -19,6 +19,11 @@
     </NotAuthorized>
 </AuthorizeView>
 
+
+
+カード読み取りサービス: @(カード読み取りService.IsMonitoring ? "動作中" : "停止中")
+
+
 @code{
     private async Task ClickMe()
     {
