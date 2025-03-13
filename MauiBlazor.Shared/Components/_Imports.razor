@@ -1,45 +1,39 @@
 ﻿@using System.Net.Http
 @using System.Net.Http.Json
-@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.AspNetCore.Components.Routing
-@using Microsoft.AspNetCore.Components.Web
-@using static Microsoft.AspNetCore.Components.Web.RenderMode
-@using Microsoft.AspNetCore.Components.Web.Virtualization
-@using Microsoft.JSInterop
-
-@using MauiBlazor.Shared
-@using MauiBlazor.Shared.Components
-@using MauiBlazor.Shared.Components.Shared.Parts
-@using MauiBlazor.Shared.Components.Shared.Dialogs
-@using MauiBlazor.Shared.Models
-@using MauiBlazor.Shared.Data
-@using MauiBlazor.Shared.Data.Repositories
-@using MauiBlazor.Shared.Services
-
-@using Microsoft.FluentUI.AspNetCore.Components
 
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.Extensions.Logging
+@using Microsoft.JSInterop
+@using Microsoft.FluentUI.AspNetCore.Components
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
 
+@using MauiBlazor.Shared
+@using MauiBlazor.Shared.Components
+@using MauiBlazor.Shared.Components.Shared.Dialogs
+@using MauiBlazor.Shared.Components.Shared.Parts
+@using MauiBlazor.Shared.Data
+@using MauiBlazor.Shared.Data.Repositories
+@using MauiBlazor.Shared.Helper
+@using MauiBlazor.Shared.Models
+@using MauiBlazor.Shared.Services
 
-@inject NavigationManager NavManager
+@using Icons = Microsoft.FluentUI.AspNetCore.Components.Icons
+
+@inject Iカード読み取りService カード読み取りService
 @inject IDialogService DialogService
 @inject IDisplayAlert DisplayAlert
-
-
-@inject 打刻Service 打刻Service
+@inject IFileUtils fileUtils
+@inject IJSRuntime JSRuntime
+@inject I通知Service 通知Service
+@inject MyAuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavManager
 @inject I社員カードRepository 社員カードRepository
 @inject I社員打刻Repository 社員打刻Repository
 @inject I社員Repository 社員Repository
+@inject 打刻Service 打刻Service
 @inject I組織Repository 組織Repository
-
-@inject Iカード読み取りService カード読み取りService
-@inject IJSRuntime JSRuntime
-@inject I通知Service 通知Service
-@inject IFileUtils fileUtils
-
-@inject MyAuthenticationStateProvider AuthenticationStateProvider
-
-@using MauiBlazor.Shared.Helper
-
-@using Icons = Microsoft.FluentUI.AspNetCore.Components.Icons

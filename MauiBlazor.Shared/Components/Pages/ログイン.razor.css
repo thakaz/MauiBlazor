@@ -1,0 +1,80 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+
+.db-init-card {
+    width: 100%;
+    max-width: 500px;
+    padding: 2rem;
+}
+
+.db-init-header {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.db-init-content {
+    margin-top: 1rem;
+}
+
+.db-init-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 500px;
+    padding: 2rem;
+}
+
+.login-header {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.login-error {
+    margin-bottom: 1.5rem;
+}
+
+.login-form {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.login-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+.password-field-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-field-container > :first-child {
+    width: 100%;
+}
+
+.password-field-container > :last-child {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin-bottom: 4px;
+    min-width: 32px;
+    height: 32px;
+    padding: 0;
+}
+
+/* スマホ画面などの小さい画面サイズに対応 */
+@media (max-width: 600px) {
+    .login-card {
+        max-width: 90%;
+        padding: 1.5rem;
+    }
+}

@@ -1,72 +1,133 @@
 ﻿@page "/login"
-@inject I組織Repository 組織Repository
+
+@inject IDbContextFactory<出退勤DbContext> DbContextFactory
+@inject ILogger<ログイン> Logger
 
 <div class="login-container">
-    <FluentCard Class="login-card">
-        <div class="login-header">
-            <h2>ログイン</h2>
-        </div>
+    @if (_dbInitRequired)
+    {
+        <FluentCard Class="db-init-card">
+            <div class="db-init-header">
+                <h2>データベース初期化</h2>
+            </div>
+            <div class="db-init-content">
+                <p>データベースが存在しないか、接続できません。初期状態のデータベースを作成しますか？</p>
+                <div class="db-init-actions">
+                    <FluentButton Appearance="Appearance.Accent" OnClick="InitializeDatabase" Loading="@_isInitializing">
+                        データベースを初期化
+                    </FluentButton>
+                </div>
+            </div>
+        </FluentCard>
+    }
+    else
+    {
+        <FluentCard Class="login-card">
+            <div class="login-header">
+                <h2>ログイン</h2>
+            </div>
 
-        @if (!string.IsNullOrEmpty(_loginErrorMessage))
-        {
-            <div class="login-error">
-                <p class="error-message">@_loginErrorMessage</p>
-            </div>
-        }
+            @if (!string.IsNullOrEmpty(_loginErrorMessage))
+            {
+                <div class="login-error">
+                    <p class="error-message">@_loginErrorMessage</p>
+                </div>
+            }
 
-        <div class="login-form">
-            <div class="form-group">
-                <FluentTextField Label="組織コード" @bind-Value=組織コード Placeholder="組織コードを入力してください" Required />
+            <div class="login-form">
+                <div class="form-group">
+                    <FluentTextField Label="組織コード" @bind-Value=組織コード Placeholder="組織コードを入力してください" Required />
+                </div>
+                <div class="form-group">
+                    <div class="password-field-container">
+                        <FluentTextField Label="パスワード" @bind-Value=password 
+                            TextFieldType="@(_showPassword ? TextFieldType.Text : TextFieldType.Password)"
+                            Placeholder="パスワードを入力してください" Required />
+                        <FluentButton OnClick="TogglePasswordVisibility" Appearance="Appearance.Lightweight" Title="@(_showPassword ? "パスワードを隠す" : "パスワードを表示")"
+                            IconStart="@(_showPassword ? new Icons.Regular.Size16.EyeOff() : new Icons.Regular.Size16.Eye())" />
+                    </div>
+                </div>
+                <div class="login-button-container">
+                    <FluentButton Appearance="Appearance.Accent" OnClick="Login">ログイン</FluentButton>
+                </div>
             </div>
-            <div class="form-group">
-                <FluentTextField Label="パスワード" @bind-Value=password TextFieldType="TextFieldType.Password"
-                    Placeholder="パスワードを入力してください" Required />
-            </div>
-            <div class="login-button-container">
-                <FluentButton Appearance="Appearance.Accent" OnClick="Login">ログイン</FluentButton>
-            </div>
-        </div>
-    </FluentCard>
+        </FluentCard>
+    }
 </div>
-
-<style>
-    .login-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 70vh;
-    }
-
-    .login-card {
-        width: 100%;
-        max-width: 400px;
-        padding: 2rem;
-    }
-
-    .login-header {
-        margin-bottom: 1.5rem;
-        text-align: center;
-    }
-
-    .login-error {
-        margin-bottom: 1.5rem;
-    }
-
-    .login-form {
-        margin-top: 1rem;
-    }
-
-    .login-button-container {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 1rem;
-    }
-</style>
 
 @code {
     private string 組織コード { get; set; } = "";
     private string password { get; set; } = "";
     private string _loginErrorMessage = "";
+    private bool _showPassword = false;
+    private bool _dbInitRequired = false;
+    private bool _isInitializing = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await CheckDatabaseExistsAsync();
+    }
+
+    private async Task CheckDatabaseExistsAsync()
+    {
+        try
+        {
+            using var context = await DbContextFactory.CreateDbContextAsync();
+            // データベースに接続してみて、組織テーブルが存在するか確認
+            var orgCount = await context.組織s.CountAsync();
+            _dbInitRequired = false;
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "データベース接続エラー");
+            _dbInitRequired = true;
+        }
+    }
+
+    private async Task InitializeDatabase()
+    {
+        try
+        {
+            _isInitializing = true;
+            
+            using var context = await DbContextFactory.CreateDbContextAsync();
+            
+            // データベースを作成（マイグレーションを適用）
+            await context.Database.MigrateAsync();
+            
+            // 初期データの追加
+            if (!await context.組織s.AnyAsync())
+            {
+                var 初期組織 = new 組織
+                {
+                    組織コード = "admin",
+                    組織名 = "管理者組織",
+                    パスワード = PasswordHasher.HashPassword("admin")
+                };
+                
+                context.組織s.Add(初期組織);
+                await context.SaveChangesAsync();
+            }
+            
+            _dbInitRequired = false;
+            _loginErrorMessage = "データベースが初期化されました。デフォルトの組織コード: admin、パスワード: admin でログインできます。";
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "データベース初期化エラー");
+            _loginErrorMessage = $"データベースの初期化に失敗しました: {ex.Message}";
+        }
+        finally
+        {
+            _isInitializing = false;
+        }
+    }
+
+    private void TogglePasswordVisibility()
+    {
+        _showPassword = !_showPassword;
+    }
 
     private async Task Login()
     {
