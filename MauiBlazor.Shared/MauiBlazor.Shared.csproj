@@ -4,6 +4,8 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
+    <InternalsVisibleTo>MauiBlazor.Tests</InternalsVisibleTo>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,7 +30,9 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
 
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.11.6" />
-    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.DataGrid.EntityFrameworkAdapter" Version="4.11.6" />
+    <PackageReference
+      Include="Microsoft.FluentUI.AspNetCore.Components.DataGrid.EntityFrameworkAdapter"
+      Version="4.11.6" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />

@@ -2,7 +2,7 @@
 
 namespace MauiBlazor.Shared.Services;
 
-enum 出退勤判定
+public enum 出退勤判定
 {
     出勤,
     退勤,
@@ -11,25 +11,25 @@ enum 出退勤判定
     不明
 }
 
-enum 時間区分
+public enum 時間区分
 {
     朝,
     昼,
     夜
 }
 
-class 判定ルール
+public class 判定ルール
 {
     public 時間区分 時間帯 { get; set; }
     public bool 打刻済み { get; set; }
     public 出退勤判定 判定 { get; set; }
 }
 
-static class 出退勤判定Service
+public static class 出退勤判定Service
 {
     static int 一日の開始 = 5;
 
-    static 時間区分 時間判定(DateTime 打刻時間)
+    public static 時間区分 時間判定(DateTime 打刻時間)
     {
         if (打刻時間.Hour >= 5 && 打刻時間.Hour <= 11)
         {
