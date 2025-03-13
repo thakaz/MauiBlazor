@@ -1,6 +1,11 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿﻿﻿﻿@using Microsoft.FluentUI.AspNetCore.Components.Icons
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">出退勤管理</a>
+        <a class="navbar-brand" href="">
+            <FluentIcon Value="@(new Icons.Regular.Size24.Clock())" />
+            出退勤管理
+        </a>
     </div>
 </div>
 
@@ -8,28 +13,44 @@
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
+        <AuthorizeView>
+            <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                        <FluentIcon Value="@(new Icons.Regular.Size20.Home())" />
+                        <span class="nav-text">ホーム</span>
+                    </NavLink>
+                </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="login" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> ログイン
-            </NavLink>
-        </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="employeelist">
+                        <FluentIcon Value="@(new Icons.Regular.Size20.People())" />
+                        <span class="nav-text">社員リスト</span>
+                    </NavLink>
+                </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="employeelist">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> 社員リスト
-            </NavLink>
-        </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="config">
+                        <FluentIcon Value="@(new Icons.Regular.Size20.Settings())" />
+                        <span class="nav-text">設定</span>
+                    </NavLink>
+                </div>
+            </Authorized>
+            <NotAuthorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                        <FluentIcon Value="@(new Icons.Regular.Size20.Home())" />
+                        <span class="nav-text">ホーム</span>
+                    </NavLink>
+                </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="config">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> 設定
-            </NavLink>
-        </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="login" Match="NavLinkMatch.All">
+                        <FluentIcon Value="@(new Icons.Regular.Size20.Key())" />
+                        <span class="nav-text">ログイン</span>
+                    </NavLink>
+                </div>
+            </NotAuthorized>
+        </AuthorizeView>
     </nav>
 </div>

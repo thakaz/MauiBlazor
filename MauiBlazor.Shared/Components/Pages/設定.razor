@@ -1,35 +1,83 @@
 ﻿@page "/config"
-
 @inject 天気Service 天気Service
 
-<h3>設定</h3>
+<div class="page-container">
+    <div class="page-header">
+        <h2>設定</h2>
+    </div>
 
-天気情報
-<FluentTextField @bind-Value=天気Service.都市名 Label="天気場所"></FluentTextField>
-APIキー
-<FluentTextField @bind-Value=天気Service.APIキー Label="APIキー"></FluentTextField>
+    <div class="content-container">
+        <!-- 天気設定カード -->
+        <FluentCard Class="settings-card">
+            <div class="card-header">
+                <h3>天気情報設定</h3>
+            </div>
+            <div class="settings-form">
+                <div class="form-group">
+                    <FluentTextField @bind-Value=天気Service.都市名 Label="天気場所" Placeholder="例: Tokyo" />
+                </div>
+                <div class="form-group">
+                    <FluentTextField @bind-Value=天気Service.APIキー Label="APIキー" Placeholder="APIキーを入力" />
+                </div>
+                <div class="form-actions">
+                    <FluentButton Appearance="Appearance.Accent" OnClick="天気取得"
+                        IconStart="@(new Icons.Regular.Size16.WeatherPartlyCloudyDay())">
+                        天気取得
+                    </FluentButton>
+                </div>
+                @if (!string.IsNullOrEmpty(天気情報))
+                {
+                    <div class="weather-result">
+                        <h4>取得結果</h4>
+                        <pre>@天気情報</pre>
+                    </div>
+                }
+            </div>
+        </FluentCard>
 
-<FluentButton OnClick="天気取得">天気取得</FluentButton>
+        <!-- 組織設定カード -->
+        <FluentCard Class="settings-card">
+            <div class="card-header">
+                <h3>組織管理</h3>
+            </div>
+            <div class="settings-form">
+                <div class="form-row">
+                    <FluentTextField @bind-Value=new組織コード Label="組織コード" Placeholder="組織コードを入力" Required />
+                    <FluentTextField @bind-Value=new組織名 Label="組織名" Placeholder="組織名を入力" Required />
+                    <FluentTextField @bind-Value=newパスワード Label="パスワード" TextFieldType="TextFieldType.Password"
+                        Placeholder="パスワードを入力" Required />
+                    <FluentButton Appearance="Appearance.Accent" OnClick="組織追加ボタンクリック時"
+                        IconStart="@(new Icons.Regular.Size16.PersonAdd())">
+                        組織追加
+                    </FluentButton>
+                </div>
+            </div>
+        </FluentCard>
 
-@天気情報
-
-
-
-組織一覧
-<FluentTextField @bind-Value=new組織コード Label="組織コード"></FluentTextField>
-<FluentTextField @bind-Value=new組織名 Label="組織名"></FluentTextField>
-<FluentTextField @bind-Value=newパスワード Label="パスワード"></FluentTextField>
-
-<FluentButton OnClick="組織追加ボタンクリック時">組織追加</FluentButton>
-<FluentDataGrid Items="@(組織s.AsQueryable())">
-    <PropertyColumn Property="@(p => p.Id)" Sortable="true" />
-    <PropertyColumn Property="@(p => p.組織コード)" Sortable="true" />
-    <PropertyColumn Property="@(p => p.組織名)" Sortable="true" />
-    <PropertyColumn Property="@(p => p.パスワード)" Sortable="true" />
-    <TemplateColumn Title="削除">
-        <FluentButton OnClick="() => 組織削除ボタンクリック時(context)">削除</FluentButton>
-    </TemplateColumn>
-</FluentDataGrid>
+        <!-- 組織一覧カード -->
+        <FluentCard Class="data-grid-card">
+            <div class="card-header">
+                <h3>組織一覧</h3>
+                <div class="card-actions">
+                    <span class="record-count">@組織s.Count() 件</span>
+                </div>
+            </div>
+            <FluentDataGrid Items="@(組織s.AsQueryable())" GridTemplateColumns="0.5fr 1fr 1.5fr 2fr 0.5fr"
+                Class="data-grid">
+                <PropertyColumn Property="@(p => p.Id)" Sortable="true" Title="ID" />
+                <PropertyColumn Property="@(p => p.組織コード)" Sortable="true" Title="組織コード" />
+                <PropertyColumn Property="@(p => p.組織名)" Sortable="true" Title="組織名" />
+                <PropertyColumn Property="@(p => p.パスワード)" Sortable="true" Title="パスワード" />
+                <TemplateColumn Title="操作">
+                    <FluentButton Appearance="Appearance.Lightweight" OnClick="() => 組織削除ボタンクリック時(context)"
+                        IconStart="@(new Icons.Regular.Size16.Delete())">
+                        削除
+                    </FluentButton>
+                </TemplateColumn>
+            </FluentDataGrid>
+        </FluentCard>
+    </div>
+</div>
 
 
 
@@ -63,11 +111,11 @@ APIキー
 
         var hashedPassword = PasswordHasher.HashPassword(newパスワード);
         var 組織 = new 組織
-            {
-                組織コード = new組織コード,
-                組織名 = new組織名,
-                パスワード = hashedPassword
-            };
+        {
+            組織コード = new組織コード,
+            組織名 = new組織名,
+            パスワード = hashedPassword
+        };
 
         await 組織Repository.AddAsync(組織);
 

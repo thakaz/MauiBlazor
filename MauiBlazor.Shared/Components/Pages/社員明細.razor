@@ -1,76 +1,125 @@
 ﻿@page "/employeedetail/{id:int}"
-
 @using System.Text
-
 @implements IDisposable
-
 @attribute [Authorize]
 
+<div class="page-container">
+    <div class="page-header">
+        <h2>社員明細</h2>
+        <FluentButton Appearance="Appearance.Lightweight" OnClick="戻るボタン"
+            IconStart="@(new Icons.Regular.Size16.ArrowLeft())">戻る</FluentButton>
+    </div>
 
-<h3>社員明細</h3>
+    @if (社員 is null)
+    {
+        <div class="loading-container">
+            <FluentProgressRing></FluentProgressRing>
+        </div>
+    }
+    else
+    {
+        <div class="content-container">
+            <!-- 社員情報カード -->
+            <FluentCard Class="employee-info-card">
+                <div class="card-header">
+                    <h3>社員情報</h3>
+                    <FluentButton Appearance="Appearance.Lightweight" OnClick="メモ追加"
+                        IconStart="@(new Icons.Regular.Size16.Edit())">メモ編集</FluentButton>
+                </div>
+                <div class="employee-info">
+                    <div class="info-row">
+                        <div class="info-label">社員番号:</div>
+                        <div class="info-value">@社員.社員番号</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">名前:</div>
+                        <div class="info-value">@社員.名前</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">入社年度:</div>
+                        <div class="info-value">@社員.入社年度</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">備考:</div>
+                        <div class="info-value">@(string.IsNullOrEmpty(社員.備考) ? "なし" : 社員.備考)</div>
+                    </div>
+                </div>
+            </FluentCard>
 
-@if (社員 is null)
-{
-    <FluentProgressRing></FluentProgressRing>
-}
-else
-{
+            <!-- 打刻操作カード -->
+            <FluentCard Class="attendance-card">
+                <div class="card-header">
+                    <h3>打刻操作</h3>
+                </div>
+                <div class="attendance-form">
+                    <div class="form-row">
+                        <FluentDatePicker @bind-Value="@打刻時間" />
+                        <FluentTimePicker @bind-Value="@打刻時間" />
+                        <FluentButton Appearance="Appearance.Accent" OnClick="出勤ボタンクリック"
+                            IconStart="@(new Icons.Regular.Size16.Clock())">打刻</FluentButton>
+                        <FluentButton OnClick="打刻リストの更新" IconStart="@(new Icons.Regular.Size16.ArrowSync())">更新
+                        </FluentButton>
+                    </div>
+                </div>
+            </FluentCard>
 
-    <FluentStack>
-        <FluentCard>
-            <FluentLabel>@社員.社員番号</FluentLabel>
-            <FluentLabel>@社員.名前</FluentLabel>
-            <FluentLabel>@社員.入社年度</FluentLabel>
-            <FluentLabel>@社員.備考</FluentLabel>
-        </FluentCard>
+            <!-- カレンダーと出力カード -->
+            <FluentCard Class="calendar-card">
+                <div class="card-header">
+                    <h3>月次データ</h3>
+                    <FluentButton Appearance="Appearance.Accent" OnClick="csvの出力"
+                        IconStart="@(new Icons.Regular.Size16.ArrowDownload())">CSVエクスポート</FluentButton>
+                </div>
+                <div class="calendar-container">
+                    <FluentCalendar View="CalendarViews.Months" @bind-Value="@SelectedMonth"
+                        @bind-PickerMonth="@PickerMonth" Class="month-calendar" />
+                    <div class="calendar-info">
+                        <p>選択月: @(SelectedMonth?.ToString("yyyy年MM月") ?? "未選択")</p>
+                        <FluentButton Appearance="Appearance.Lightweight" OnClick="() => SelectedMonth = null"
+                            IconStart="@(new Icons.Regular.Size16.Delete())">リセット</FluentButton>
+                    </div>
+                </div>
+            </FluentCard>
 
-        <FluentStack>
+            <!-- 打刻リストカード -->
+            <FluentCard Class="data-grid-card">
+                <div class="card-header">
+                    <h3>打刻履歴</h3>
+                    <div class="card-actions">
+                        <span class="record-count">@社員打刻s.Count 件</span>
+                    </div>
+                </div>
+                <FluentDataGrid Items="@(社員打刻s.AsQueryable())" GridTemplateColumns="0.5fr 1fr 2fr 2fr 0.5fr"
+                    Class="data-grid">
+                    <PropertyColumn Property="@(p => p.Id)" Sortable="true" Title="ID" />
+                    <PropertyColumn Property="@(p => p.社員番号)" Sortable="true" Title="社員番号" />
+                    <PropertyColumn Property="@(p => p.打刻時間)" Sortable="true" Title="打刻時間" />
+                    <PropertyColumn Property="@(p => p.備考)" Sortable="true" Title="備考" />
+                    <TemplateColumn Title="操作">
+                        <FluentButton Appearance="Appearance.Lightweight" OnClick="() => 打刻削除(context.Id)"
+                            IconStart="@(new Icons.Regular.Size16.Delete())">削除</FluentButton>
+                    </TemplateColumn>
+                </FluentDataGrid>
+            </FluentCard>
 
-            <input type="datetime-local" step="2" @bind-value="打刻時間" />
-            <InputDate @bind-Value="打刻時間"></InputDate>
-            <FluentButton OnClick="出勤ボタンクリック">
-                打刻
-            </FluentButton>
-
-            <FluentButton OnClick="打刻リストの更新">
-                打刻情報取得
-            </FluentButton>
-
-            <FluentButton OnClick="戻るボタン">戻る</FluentButton>
-
-        </FluentStack>
-
-    </FluentStack>
-
-    <FluentCalendar View="CalendarViews.Months" @bind-Value="@SelectedMonth" @bind-PickerMonth="@PickerMonth" Style="height: 250px;" />
-    <p>Selected @(SelectedMonth?.ToString("yyyy-MM-dd"))</p>
-    <p>Panel @(PickerMonth.ToString("yyyy-MM-dd"))</p>
-    <FluentButton onclick="()=>SelectedMonth=null">日付リセット</FluentButton>
-
-
-    <FluentButton OnClick="メモ追加">メモ追加</FluentButton>
-
-    <FluentButton OnClick="csvの出力">csvの出力</FluentButton>
-
-
-    <FluentDataGrid Items="@(社員打刻s.AsQueryable())">
-        <PropertyColumn Property="@(p => p.Id)" Sortable="true" />
-        <PropertyColumn Property="@(p => p.社員番号)" Sortable="true" />
-        <PropertyColumn Property="@(p => p.打刻時間)" Sortable="true" />
-        <PropertyColumn Property="@(p => p.備考)" Sortable="true" />
-
-        <TemplateColumn Title="削除">
-            <FluentButton OnClick="()=>打刻削除(context.Id)">削除</FluentButton>
-        </TemplateColumn>
-    </FluentDataGrid>
-
-    <FluentDataGrid Items="@(社員カードs.AsQueryable())">
-        <PropertyColumn Property="@(p => p.カードUID)" Sortable="true" />
-        <PropertyColumn Property="@(p => p.カード名称)" Sortable="true" />
-        <PropertyColumn Property="@(p => p.追加日)" Sortable="true" />
-        <PropertyColumn Property="@(p => p.備考)" Sortable="true" />
-    </FluentDataGrid>
-}
+            <!-- 社員カードリストカード -->
+            <FluentCard Class="data-grid-card">
+                <div class="card-header">
+                    <h3>登録カード</h3>
+                    <div class="card-actions">
+                        <span class="record-count">@社員カードs.Count 件</span>
+                    </div>
+                </div>
+                <FluentDataGrid Items="@(社員カードs.AsQueryable())" GridTemplateColumns="2fr 1fr 1fr 2fr" Class="data-grid">
+                    <PropertyColumn Property="@(p => p.カードUID)" Sortable="true" Title="カードUID" />
+                    <PropertyColumn Property="@(p => p.カード名称)" Sortable="true" Title="カード名称" />
+                    <PropertyColumn Property="@(p => p.追加日)" Sortable="true" Title="追加日" />
+                    <PropertyColumn Property="@(p => p.備考)" Sortable="true" Title="備考" />
+                </FluentDataGrid>
+            </FluentCard>
+        </div>
+    }
+</div>
 
 
 @code {
@@ -81,7 +130,7 @@ else
 
     private 社員 社員 { get; set; } = null!;
 
-    private DateTime 打刻時間 { get; set; } = DateTime.Now;
+    private DateTime? 打刻時間 { get; set; } = DateTime.UtcNow;
 
     private IList<社員打刻> 社員打刻s { get; set; } = new List<社員打刻>();
     private IList<社員カード> 社員カードs { get; set; } = new List<社員カード>();
@@ -123,8 +172,13 @@ else
 
     private async Task 出勤ボタンクリック()
     {
+        if (打刻時間 is null)
+        {
+            await DisplayAlert.ShowAlertAsync("エラー", "打刻時間を入力してください。", "OK");
+            return;
+        };
 
-        await 打刻Service.打刻(社員.社員番号, 打刻時間);
+        await 打刻Service.打刻(社員.社員番号, 打刻時間.Value);
 
         await 打刻リストの更新();
     }
@@ -168,27 +222,27 @@ else
             return;
         }
 
-        社員打刻s= await 社員打刻Repository.GetBy社員番号And月度Async(社員.社員番号, DateOnly.FromDateTime(SelectedMonth.Value));
+        社員打刻s = await 社員打刻Repository.GetBy社員番号And月度Async(社員.社員番号, DateOnly.FromDateTime(SelectedMonth.Value));
 
         var csvFilePath = CSVService.WriteCSV(社員打刻s);
 
         // ファイルをダウンロード
-        await fileUtils.SaveFileAsync(csvFilePath, new CancellationToken(),"打刻データ.csv");
+        await fileUtils.SaveFileAsync(csvFilePath, new CancellationToken(), "打刻データ.csv");
     }
 
     private async Task メモ追加()
     {
         DialogParameters parameters = new()
-            {
-                Title = $" 社員情報の編集",
-                PrimaryAction = "決定",
-                PrimaryActionEnabled = true,
-                SecondaryAction = "キャンセル",
-                Width = "500px",
-                TrapFocus = true,
-                Modal = true,
-                PreventScroll = true
-            };
+        {
+            Title = $" 社員情報の編集",
+            PrimaryAction = "決定",
+            PrimaryActionEnabled = true,
+            SecondaryAction = "キャンセル",
+            Width = "500px",
+            TrapFocus = true,
+            Modal = true,
+            PreventScroll = true
+        };
 
 
         var target社員 = await 社員Repository.GetBy社員番号WithRelatedAsync(社員.社員番号);

@@ -1,31 +1,64 @@
 ﻿@page "/employeelist"
 @attribute [Authorize]
 
-<h3>社員リスト</h3>
+<div class="page-container">
+    <div class="page-header">
+        <h2>社員リスト</h2>
+        <p>組織: @(my組織?.組織名 ?? "未選択")</p>
+    </div>
 
-<FluentTextField @bind-Value=社員番号 Label="社員番号"></FluentTextField>
-<FluentTextField @bind-Value=名前 Label="名前"></FluentTextField>
-<FluentButton OnClick="社員追加ボタンクリック時">社員追加</FluentButton>
+    <div class="content-container">
+        <FluentCard Class="add-employee-card">
+            <div class="card-header">
+                <h3>社員追加</h3>
+            </div>
+            <div class="form-container">
+                <div class="form-row">
+                    <FluentTextField @bind-Value=社員番号 Label="社員番号" Placeholder="社員番号を入力" Required />
+                    <FluentTextField @bind-Value=名前 Label="名前" Placeholder="名前を入力" Required />
+                    <FluentButton Appearance="Appearance.Accent" OnClick="社員追加ボタンクリック時">追加</FluentButton>
+                </div>
+            </div>
+        </FluentCard>
 
-@if (社員s.Count > 0)
-{
+        @if (社員s.Count > 0)
+        {
+            <FluentCard Class="employee-list-card">
+                <div class="card-header">
+                    <h3>社員一覧</h3>
+                    <div class="card-actions">
+                        <span class="employee-count">@社員s.Count 名</span>
+                    </div>
+                </div>
+                <FluentDataGrid Items="@(社員s.AsQueryable())" GridTemplateColumns="0.5fr 1fr 1fr 0.8fr 1.5fr 0.5fr 0.5fr"
+                    Class="employee-grid">
+                    <PropertyColumn Property="@(p => p.Id)" Sortable="true" Title="ID" />
+                    <PropertyColumn Property="@(p => p.社員番号)" Sortable="true" Title="社員番号" />
+                    <PropertyColumn Property="@(p => p.名前)" Sortable="true" Title="名前" />
+                    <PropertyColumn Property="@(p => p.入社年度)" Sortable="true" Title="入社年度" />
+                    <PropertyColumn Property="@(p => p.備考)" Sortable="true" Title="備考" />
+                    <TemplateColumn Title="明細">
+                        <FluentButton Appearance="Appearance.Lightweight" OnClick="() => 社員明細ボタンクリック時(context)">明細
+                        </FluentButton>
+                    </TemplateColumn>
+                    <TemplateColumn Title="削除">
+                        <FluentButton Appearance="Appearance.Lightweight" OnClick="() => 社員削除ボタンクリック時(context)">削除
+                        </FluentButton>
+                    </TemplateColumn>
+                </FluentDataGrid>
+            </FluentCard>
+        }
+        else
+        {
+            <FluentCard Class="empty-state-card">
+                <div class="empty-state">
+                    <p>社員データがありません。上のフォームから社員を追加してください。</p>
+                </div>
+            </FluentCard>
+        }
+    </div>
+</div>
 
-
-    <FluentDataGrid Items="@(社員s.AsQueryable())">
-        <PropertyColumn Property="@(p => p.Id)" Sortable="true" />
-        <PropertyColumn Property="@(p => p.社員番号)" Sortable="true" />
-        <PropertyColumn Property="@(p => p.名前)" Sortable="true" />
-        <PropertyColumn Property="@(p => p.入社年度)" Sortable="true" />
-        <PropertyColumn Property="@(p => p.備考)" Sortable="true" />
-        <TemplateColumn Title="明細">
-            <FluentButton OnClick="() => 社員明細ボタンクリック時(context)">明細</FluentButton>
-        </TemplateColumn>
-
-        <TemplateColumn Title="削除">
-            <FluentButton OnClick="() => 社員削除ボタンクリック時(context)">削除</FluentButton>
-        </TemplateColumn>
-    </FluentDataGrid>
-}
 
 @code {
 

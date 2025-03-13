@@ -1,26 +1,80 @@
-﻿
+﻿@page "/login"
 @inject I組織Repository 組織Repository
 
-@page "/login"
+<div class="login-container">
+    <FluentCard Class="login-card">
+        <div class="login-header">
+            <h2>ログイン</h2>
+        </div>
 
-<h3>ログイン</h3>
+        @if (!string.IsNullOrEmpty(_loginErrorMessage))
+        {
+            <div class="login-error">
+                <p class="error-message">@_loginErrorMessage</p>
+            </div>
+        }
 
-@if (_loginErrorMessage !="")
-{
-    <p>@_loginErrorMessage</p>
+        <div class="login-form">
+            <div class="form-group">
+                <FluentTextField Label="組織コード" @bind-Value=組織コード Placeholder="組織コードを入力してください" Required />
+            </div>
+            <div class="form-group">
+                <FluentTextField Label="パスワード" @bind-Value=password TextFieldType="TextFieldType.Password"
+                    Placeholder="パスワードを入力してください" Required />
+            </div>
+            <div class="login-button-container">
+                <FluentButton Appearance="Appearance.Accent" OnClick="Login">ログイン</FluentButton>
+            </div>
+        </div>
+    </FluentCard>
+</div>
 
-}
+<style>
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 70vh;
+    }
 
-<FluentTextField Label="組織コード" @bind-Value=組織コード />
-<FluentTextField Label="パスワード" @bind-Value=password TextFieldType="TextFieldType.Password" />
-<FluentButton OnClick="Login">ログイン</FluentButton>
+    .login-card {
+        width: 100%;
+        max-width: 400px;
+        padding: 2rem;
+    }
+
+    .login-header {
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .login-error {
+        margin-bottom: 1.5rem;
+    }
+
+    .login-form {
+        margin-top: 1rem;
+    }
+
+    .login-button-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 1rem;
+    }
+</style>
 
 @code {
     private string 組織コード { get; set; } = "";
     private string password { get; set; } = "";
-    private string _loginErrorMessage="";
+    private string _loginErrorMessage = "";
+
     private async Task Login()
     {
+        if (string.IsNullOrWhiteSpace(組織コード) || string.IsNullOrWhiteSpace(password))
+        {
+            _loginErrorMessage = "組織コードとパスワードを入力してください";
+            return;
+        }
 
         (var isSuccess, _loginErrorMessage) = await AuthenticationStateProvider.ValidateLogin(組織コード, password);
         if (isSuccess)
@@ -28,5 +82,4 @@
             NavManager.NavigateTo("/");
         }
     }
-
 }

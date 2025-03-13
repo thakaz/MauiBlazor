@@ -1,0 +1,13 @@
+/* 社員リスト固有のスタイル */
+.add-employee-card {
+    margin-bottom: 1.5rem;
+}
+
+.empty-state-card {
+    padding: 2rem;
+    text-align: center;
+}
+
+.empty-state {
+    color: #666;
+}

@@ -1,20 +1,40 @@
 ﻿@inherits LayoutComponentBase
+@using MauiBlazor.Shared.Helper.Auth
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            ....
+<FluentDesignSystemProvider>
+    <div class="page">
+        <div class="sidebar">
+            <NavMenu />
         </div>
 
-        <article class="content px-4">
-            @Body
-        </article>
-        <ToastComponent />
-        <FluentToastProvider MaxToastCount="10" />
-        <FluentDialogProvider />
-    </main>
-</div>
+        <main>
+            <div class="top-row px-4">
+                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.End">
+                    <AuthorizeView>
+                        <Authorized>
+                            <FluentButton Appearance="Appearance.Lightweight" OnClick="Logout">ログアウト</FluentButton>
+                        </Authorized>
+                    </AuthorizeView>
+                </FluentStack>
+            </div>
+
+            <article class="content px-4">
+                <FluentCard Class="main-content">
+                    @Body
+                </FluentCard>
+            </article>
+            <ToastComponent />
+            <FluentToastProvider MaxToastCount="10" />
+            <FluentDialogProvider />
+        </main>
+    </div>
+</FluentDesignSystemProvider>
+
+@code {
+    private void Logout()
+    {
+        var authStateProvider = (MyAuthenticationStateProvider)AuthenticationStateProvider;
+        authStateProvider.NotifyUserLogout();
+        NavManager.NavigateTo("/login");
+    }
+}
