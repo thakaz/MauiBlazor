@@ -89,7 +89,7 @@ public static class 出退勤判定Service
     }
 
 
-    public static DateOnly 打刻日判定(DateTime 打刻時間)
+    public static DateOnly 打刻日判定(DateTimeOffset 打刻時間)
     {
         try
         {

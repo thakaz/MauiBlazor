@@ -1,4 +1,4 @@
-﻿using MauiBlazor.Shared;
+﻿﻿﻿﻿using MauiBlazor.Shared;
 using MauiBlazor.Shared.Data;
 using MauiBlazor.Shared.Data.Repositories;
 using MauiBlazor.Shared.Helper.Auth;
@@ -63,6 +63,11 @@ builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.Get
 
 builder.Services.AddSingleton<天気Service>();
 
+// 音声サービスの登録
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<VoiceBox音声Service>();
+builder.Services.AddScoped<I音声Service, Web音声Service>();
+
 
 var app = builder.Build();
 
@@ -73,6 +78,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 
+app.UseStaticFiles(); // JavaScriptファイルを追加
 app.UseAntiforgery();
 
 app.UseAuthentication(); // 認証ミドルウェアを追加
@@ -84,4 +90,3 @@ app.MapRazorComponents<App>()
     .AddAdditionalAssemblies(typeof(MauiBlazor.Shared.Components._Imports).Assembly);
 
 app.Run();
-

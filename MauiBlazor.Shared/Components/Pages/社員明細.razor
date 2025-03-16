@@ -2,6 +2,9 @@
 @using System.Text
 @implements IDisposable
 @attribute [Authorize]
+@inject I音声Service 音声Service
+@inject 天気Service 天気Service
+@inject I通知Service 通知Service
 
 <div class="page-container">
     <div class="page-header">
@@ -42,6 +45,19 @@
                     <div class="info-row">
                         <div class="info-label">備考:</div>
                         <div class="info-value">@(string.IsNullOrEmpty(社員.備考) ? "なし" : 社員.備考)</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">音声設定:</div>
+                        <div class="info-value">
+                            @{
+                                var 音声タイプ名 = 社員.社員設定 != null ? ((音声タイプ)社員.社員設定.効果音タイプ).ToString() : "システム音";
+                            }
+                            @音声タイプ名
+                            <FluentButton Appearance="Appearance.Lightweight" OnClick="音声テスト"
+                                IconStart="@(new Icons.Regular.Size16.Speaker2())">
+                                音声テスト
+                            </FluentButton>
+                        </div>
                     </div>
                 </div>
             </FluentCard>
@@ -123,8 +139,6 @@
 
 
 @code {
-
-
     [Parameter]
     public int id { get; set; }
 
@@ -144,6 +158,7 @@
         try
         {
             var 社員 = await 社員Repository.GetByIdAsync(id);
+
 
 
             if (社員 is not null)
@@ -230,6 +245,65 @@
         await fileUtils.SaveFileAsync(csvFilePath, new CancellationToken(), "打刻データ.csv");
     }
 
+    private async Task 音声テスト()
+    {
+        try
+        {
+            // 現在の音声タイプを取得
+            var 音声タイプ値 = 社員.社員設定 != null ? (音声タイプ)社員.社員設定.効果音タイプ : 音声タイプ.システム音;
+
+            // 傘が必要かどうかを確認
+            var 傘が必要 = await 天気Service.傘が必要か(DateOnly.FromDateTime(DateTime.Now));
+
+            // ランダムなセリフを生成
+            var セリフ = ランダムセリフ生成(社員.名前, 傘が必要);
+
+            // 音声を再生
+            await 音声Service.音声再生Async(音声タイプ値, セリフ);
+
+            // 通知を表示
+            通知Service.ShowToast(ToastIntent.Info, "音声テスト中...");
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert.ShowAlertAsync("エラー", $"音声テストに失敗しました: {ex.Message}", "OK");
+        }
+    }
+
+    private string ランダムセリフ生成(string 社員名, bool 傘が必要)
+    {
+        // ランダムなセリフのリスト
+        var セリフリスト = new List<string>
+        {
+            $"{社員名}さん、おはようございます。今日も一日頑張りましょう！",
+            $"{社員名}さん、こんにちは。お疲れ様です。",
+            $"{社員名}さん、こんばんは。お疲れ様でした。",
+            $"{社員名}さん、いつもお疲れ様です。体調はいかがですか？",
+            $"{社員名}さん、今日の調子はどうですか？",
+            $"こんにちは、{社員名}さん。今日も素晴らしい一日になりますように。",
+            $"{社員名}さん、お仕事頑張ってください！",
+            $"{社員名}さん、素敵な一日をお過ごしください。"
+        };
+
+        // 天気に関するセリフ
+        if (傘が必要)
+        {
+            セリフリスト.Add($"{社員名}さん、今日は雨や雪の予報です。傘をお忘れなく！");
+            セリフリスト.Add($"{社員名}さん、外は雨のようです。お気をつけてお過ごしください。");
+            セリフリスト.Add($"今日は天気が悪いようですね、{社員名}さん。暖かくしてお過ごしください。");
+        }
+        else
+        {
+            セリフリスト.Add($"{社員名}さん、今日は良い天気ですね。素敵な一日をお過ごしください。");
+            セリフリスト.Add($"{社員名}さん、天気が良くて気持ちが良いですね。");
+            セリフリスト.Add($"今日は晴れていて気持ちが良いですね、{社員名}さん。");
+        }
+
+        // ランダムにセリフを選択
+        var random = new Random();
+        return セリフリスト[random.Next(セリフリスト.Count)];
+    }
+
     private async Task メモ追加()
     {
         DialogParameters parameters = new()
@@ -245,13 +319,14 @@
         };
 
 
-        var target社員 = await 社員Repository.GetBy社員番号WithRelatedAsync(社員.社員番号);
+        var target社員 = await 社員Repository.GetBy社員番号Async(社員.社員番号);
 
         IDialogReference dialog = await DialogService.ShowDialogAsync<SimpleDialog>(target社員, parameters);
         DialogResult? result = await dialog.Result;
 
         await 社員Repository.UpdateAsync(target社員);
         await DisplayAlert.ShowAlertAsync("メモ追加", "メモ追加", "OK");
-    }
+        社員 = target社員;
 
+    }
 }

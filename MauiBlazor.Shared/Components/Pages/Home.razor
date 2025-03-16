@@ -1,11 +1,14 @@
 ﻿@page "/"
 @inject 天気Service 天気Service
 @using Microsoft.AspNetCore.Components.Authorization
+@inject I音声Service 音声Service
 
 <div class="page-container">
     <div class="page-header">
         <h2>ホーム</h2>
     </div>
+
+    <FluentButton OnClick="音声再生テスト" >再生テスト</FluentButton>
 
     <div class="content-container">
         <!-- 天気情報カード -->
@@ -90,6 +93,13 @@
     {
         傘が必要か = await 天気Service.傘が必要か(DateOnly.FromDateTime(DateTime.Now));
         await 天気Service.Get天気Async();
+    }
+
+
+    private async Task 音声再生テスト()
+    {
+        // 音声を再生
+        await 音声Service.音声再生Async(音声タイプ.ずんだもん, "ほげほげふがふが、にんじんしりしり。");
     }
 
 }

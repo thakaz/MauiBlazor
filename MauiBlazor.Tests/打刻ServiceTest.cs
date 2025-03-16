@@ -16,6 +16,8 @@ namespace MauiBlazor.Tests
         private readonly Mock<I社員Repository> _社員RepositoryMock;
         private readonly Mock<I社員打刻Repository> _社員打刻RepositoryMock;
         private readonly Mock<I通知Service> _通知ServiceMock;
+        private readonly Mock<I音声Service> _音声ServiceMock;
+        private readonly Mock<天気Service> _天気ServiceMock;
         private readonly 打刻Service _打刻Service;
 
         public 打刻ServiceTest()
@@ -23,11 +25,15 @@ namespace MauiBlazor.Tests
             _社員RepositoryMock = new Mock<I社員Repository>();
             _社員打刻RepositoryMock = new Mock<I社員打刻Repository>();
             _通知ServiceMock = new Mock<I通知Service>();
+            _音声ServiceMock = new Mock<I音声Service>();
+            _天気ServiceMock = new Mock<天気Service>();
 
             _打刻Service = new 打刻Service(
                 _社員RepositoryMock.Object,
                 _社員打刻RepositoryMock.Object,
-                _通知ServiceMock.Object
+                _通知ServiceMock.Object,
+                _音声ServiceMock.Object,
+                _天気ServiceMock.Object
             );
         }
 

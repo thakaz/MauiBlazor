@@ -1,6 +1,5 @@
 ﻿namespace MauiBlazor.Shared.Data.Repositories.Base;
 
-
 /// <summary>
 /// リポジトリの基底クラス
 /// </summary>
@@ -29,19 +28,19 @@ public abstract class RepositoryBase<T> : IRepository<T> where T : class
         _contextFactory = contextFactory;
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public virtual async Task<IEnumerable<T>> GetAllAsync()
     {
         using var _context = await _contextFactory.CreateDbContextAsync();
         return await _context.Set<T>().ToListAsync();
     }
 
-    public async Task<T?> GetByIdAsync(int id)
+    public virtual async Task<T?> GetByIdAsync(int id)
     {
         using var _context = await _contextFactory.CreateDbContextAsync();
         return await _context.Set<T>().FindAsync(id);
     }
 
-    public async Task<T?> GetByIdAsync(CompositeKey id)
+    public virtual async Task<T?> GetByIdAsync(CompositeKey id)
     {
         using var _context = await _contextFactory.CreateDbContextAsync();
         return await _context.Set<T>().FindAsync(id);
@@ -62,7 +61,7 @@ public abstract class RepositoryBase<T> : IRepository<T> where T : class
         return entity;
     }
 
-    public async Task UpdateAsync(T entity)
+    public virtual async Task UpdateAsync(T entity)
     {
         if (entity == null)
         {
@@ -74,7 +73,7 @@ public abstract class RepositoryBase<T> : IRepository<T> where T : class
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(int id)
+    public virtual async Task DeleteAsync(int id)
     {
         using var _context = await _contextFactory.CreateDbContextAsync();
         var entity = await _context.Set<T>().FindAsync(id);
@@ -87,7 +86,7 @@ public abstract class RepositoryBase<T> : IRepository<T> where T : class
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(CompositeKey id)
+    public virtual async Task DeleteAsync(CompositeKey id)
     {
         using var _context = await _contextFactory.CreateDbContextAsync();
         var entity = await _context.Set<T>().FindAsync(id);

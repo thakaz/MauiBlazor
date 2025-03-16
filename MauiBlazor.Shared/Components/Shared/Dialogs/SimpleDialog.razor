@@ -9,6 +9,17 @@
 
 <FluentTextField @bind-value="@Content.社員設定.通知先メールアドレス">通知先メールアドレス:</FluentTextField>
 
+<!-- 音声設定 -->
+<p>音声設定</p>
+<div class="form-group">
+    <label for="音声タイプ">音声タイプ:</label>
+    <select id="音声タイプ" @bind="Content.社員設定.効果音タイプ" class="form-control">
+        <option value="0">システム音</option>
+        <option value="1">ずんだもん</option>
+        <option value="2">めたん</option>
+    </select>
+</div>
+
 <!-- 社員メモの編集フォームを追加 -->
 <p>社員メモ</p>
 
