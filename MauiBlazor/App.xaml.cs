@@ -1,6 +1,5 @@
 ﻿using MauiBlazor.Shared.Services;
 using Plugin.Maui.Audio;
-using Windows.Media.Capture;
 
 namespace MauiBlazor
 {
@@ -10,7 +9,7 @@ namespace MauiBlazor
         private readonly IAudioManager _audioManager;
 
 
-        public App(Iカード読み取りService cardReaderService,IAudioManager audioManager)
+        public App(Iカード読み取りService cardReaderService, IAudioManager audioManager)
         {
             InitializeComponent();
             _cardReaderService = cardReaderService;

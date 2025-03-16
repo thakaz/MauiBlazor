@@ -1,4 +1,4 @@
-﻿﻿﻿﻿namespace MauiBlazor.Shared.Services;
+﻿namespace MauiBlazor.Shared.Services;
 
 public class 打刻Service
 {
@@ -9,8 +9,8 @@ public class 打刻Service
     天気Service _天気Service;
 
     public 打刻Service(
-        I社員Repository 社員Repository, 
-        I社員打刻Repository 社員打刻Repository, 
+        I社員Repository 社員Repository,
+        I社員打刻Repository 社員打刻Repository,
         I通知Service 通知Service,
         I音声Service 音声Service,
         天気Service 天気Service)

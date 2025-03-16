@@ -9,14 +9,14 @@ public partial class MainPage : ContentPage
     private readonly IAudioManager _audioManager;
 
 
-    public MainPage(Iカード読み取りService cardReaderService,IAudioManager audioManager)
+    public MainPage(Iカード読み取りService cardReaderService, IAudioManager audioManager)
     {
         InitializeComponent();
 
         _cardReaderService = cardReaderService;
         _cardReaderService.StartMonitoring();
 
-        _audioManager=audioManager;
+        _audioManager = audioManager;
 
     }
 

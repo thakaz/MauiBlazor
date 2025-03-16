@@ -9,7 +9,7 @@ namespace MauiBlazor.Services;
 public class カード読み取りService : Iカード読み取りService
 {
     private readonly IContextFactory _contextFactory;
-    private  ISCardMonitor? _cardMonitor;
+    private ISCardMonitor? _cardMonitor;
     private readonly 打刻Service _打刻Service;
     private readonly 社員Service _社員Service;
 

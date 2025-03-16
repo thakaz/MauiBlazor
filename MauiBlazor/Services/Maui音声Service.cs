@@ -1,8 +1,5 @@
 ﻿using MauiBlazor.Shared.Services;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Controls.Shapes;
 using Plugin.Maui.Audio;
-using System.IO;
 using System.Media;
 
 namespace MauiBlazor.Services;

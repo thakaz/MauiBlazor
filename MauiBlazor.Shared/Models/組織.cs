@@ -8,7 +8,7 @@ public class 組織
     [Key]
     public int Id { get; set; }
 
-    [Required,Unique]
+    [Required, Unique]
     public required string 組織コード { get; set; }
 
     [Required]

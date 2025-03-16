@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 
 namespace MauiBlazor.Shared.Helper.Auth;
 
@@ -57,7 +51,7 @@ public class MyAuthenticationStateProvider : AuthenticationStateProvider
         }
 
         // 組織のパスワードと入力されたパスワードが一致するか
-        if (PasswordHasher.VerifyPassword(password,組織.パスワード ?? ""))
+        if (PasswordHasher.VerifyPassword(password, 組織.パスワード ?? ""))
         {
             NotifyUserAuthentication(組織.組織コード);
             return (true, string.Empty);

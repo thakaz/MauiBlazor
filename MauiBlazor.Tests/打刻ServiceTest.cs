@@ -1,12 +1,8 @@
-﻿using MauiBlazor.Shared.Models;
+﻿using MauiBlazor.Shared.Data.Repositories;
+using MauiBlazor.Shared.Models;
 using MauiBlazor.Shared.Services;
-using MauiBlazor.Shared.Data.Repositories;
-using Moq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System;
 using Microsoft.FluentUI.AspNetCore.Components;
+using Moq;
 
 namespace MauiBlazor.Tests
 {

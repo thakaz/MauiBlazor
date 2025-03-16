@@ -1,4 +1,4 @@
-﻿﻿using CommunityToolkit.Maui;
+﻿using CommunityToolkit.Maui;
 using MauiBlazor.Services;
 using MauiBlazor.Shared;
 using MauiBlazor.Shared.Data;
@@ -73,7 +73,7 @@ public static class MauiProgram
         builder.Services.AddAuthorizationCore();
 
         builder.Services.AddSingleton<天気Service>();
-        
+
         // 音声サービスの登録
         builder.Services.AddHttpClient();
         builder.Services.AddSingleton<VoiceBox音声Service>();
