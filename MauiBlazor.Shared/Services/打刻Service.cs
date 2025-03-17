@@ -1,4 +1,9 @@
-﻿namespace MauiBlazor.Shared.Services;
+﻿using ClosedXML.Excel;
+using MauiBlazor.Shared.Utils;
+
+namespace MauiBlazor.Shared.Services;
+
+
 
 public class 打刻Service
 {
@@ -7,19 +12,22 @@ public class 打刻Service
     I通知Service _通知Service;
     I音声Service _音声Service;
     天気Service _天気Service;
+    IFileUtils _fileUtils;
 
     public 打刻Service(
         I社員Repository 社員Repository,
         I社員打刻Repository 社員打刻Repository,
         I通知Service 通知Service,
         I音声Service 音声Service,
-        天気Service 天気Service)
+        天気Service 天気Service,
+        IFileUtils fileUtils)
     {
         _社員Repository = 社員Repository;
         _社員打刻Repository = 社員打刻Repository;
         _通知Service = 通知Service;
         _音声Service = 音声Service;
         _天気Service = 天気Service;
+        _fileUtils = fileUtils;
     }
 
     public async Task 打刻byIDm(string idm)
@@ -97,5 +105,40 @@ public class 打刻Service
             await _音声Service.音声再生Async(選択音声タイプ, セリフ);
         }
     }
+   
+    
+    public async Task Excelの出力(string 社員番号, DateOnly 開始日, DateOnly 終了日)
+    {
+        var 社員打刻s = (await _社員打刻Repository.GetBy社員番号Async(社員番号)).Where(x => x.打刻日 >= 開始日 && x.打刻日 <= 終了日).ToList();
+        using (var workbook = new XLWorkbook())
+        {
+            var worksheet = workbook.Worksheets.Add("勤務報告書");
+
+            // ヘッダーの設定
+            worksheet.Cell(1, 1).Value = "日付";
+            worksheet.Cell(1, 2).Value = "出勤時間";
+            worksheet.Cell(1, 3).Value = "退勤時間";
+
+            int row = 2;
+            for (var date = 開始日; date <= 終了日; date = date.AddDays(1))
+            {
+                var (出勤時間, 退勤時間) = 出退勤判定Service.出退勤判定(社員打刻s, date);
+
+                worksheet.Cell(row, 1).Value = date.ToString("yyyy/MM/dd");
+                worksheet.Cell(row, 2).Value = 出勤時間?.ToString("HH:mm:ss") ?? "なし";
+                worksheet.Cell(row, 3).Value = 退勤時間?.ToString("HH:mm:ss") ?? "なし";
+
+                row++;
+            }
+
+            var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "勤務報告書.xlsx");
+            workbook.SaveAs(filePath);
+
+            // ファイルをダウンロード
+            await _fileUtils.SaveFileAsync(filePath, new CancellationToken(), "勤務報告書.xlsx");
+        }
+    }
+
+
 
 }

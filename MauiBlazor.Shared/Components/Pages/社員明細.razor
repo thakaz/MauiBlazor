@@ -1,5 +1,6 @@
 ﻿@page "/employeedetail/{id:int}"
 @using System.Text
+@using DocumentFormat.OpenXml.Math
 @implements IDisposable
 @attribute [Authorize]
 @inject I音声Service 音声Service
@@ -86,6 +87,7 @@
                     <h3>月次データ</h3>
                     <FluentButton Appearance="Appearance.Accent" OnClick="csvの出力"
                         IconStart="@(new Icons.Regular.Size16.ArrowDownload())">CSVエクスポート</FluentButton>
+                    <FluentButton Appearance="Appearance.Accent" OnClick="Excelの出力">Excelエクスポート</FluentButton>
                 </div>
                 <div class="calendar-container">
                     <FluentCalendar View="CalendarViews.Months" @bind-Value="@SelectedMonth"
@@ -323,5 +325,20 @@
         await DisplayAlert.ShowAlertAsync("メモ追加", "メモ追加", "OK");
         社員 = target社員;
 
+    }
+
+
+    private async Task Excelの出力()
+    {
+        if (SelectedMonth is null)
+        {
+            await DisplayAlert.ShowAlertAsync("エラー", "月度を選択してください。", "OK");
+            return;
+        }
+
+        var 開始日 = new DateOnly(SelectedMonth.Value.Year, SelectedMonth.Value.Month - 1, 16);
+        var 終了日 = new DateOnly(SelectedMonth.Value.Year, SelectedMonth.Value.Month, 15);
+
+        await 打刻Service.Excelの出力(社員.社員番号, 開始日, 終了日);
     }
 }
