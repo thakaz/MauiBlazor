@@ -45,6 +45,10 @@ public partial class 出退勤DbContext : DbContext
             .HasIndex(x => x.社員番号)
             .IsUnique();
 
+        modelBuilder.Entity<組織>()
+            .HasIndex(x => x.組織コード)
+            .IsUnique();
+
     }
 
 }

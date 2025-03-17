@@ -118,6 +118,6 @@ public class Maui音声Service : I音声Service
     /// </summary>
     public string 打刻セリフ生成(string 社員名, string 打刻種別, bool 傘が必要)
     {
-        return _voiceBoxService.打刻セリフ生成(社員名, 打刻種別, 傘が必要);
+        return VoiceBox音声Service.打刻セリフ生成(社員名, 打刻種別, 傘が必要);
     }
 }

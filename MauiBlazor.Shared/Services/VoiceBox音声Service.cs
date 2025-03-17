@@ -75,7 +75,7 @@ public class VoiceBox音声Service
     /// <summary>
     /// 天気情報に基づいて打刻時のセリフを生成します
     /// </summary>
-    public string 打刻セリフ生成(string 社員名, string 打刻種別, bool 傘が必要)
+    public static string 打刻セリフ生成(string 社員名, string 打刻種別, bool 傘が必要)
     {
         var 時間帯 = DateTime.Now.Hour switch
         {

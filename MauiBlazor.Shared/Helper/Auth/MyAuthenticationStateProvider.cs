@@ -6,7 +6,7 @@ public class MyAuthenticationStateProvider : AuthenticationStateProvider
 {
     private readonly I組織Repository _組織Repository;
 
-    private bool _isAuthenticated
+    private bool IsAuthenticated
     {
         get
         {
@@ -14,20 +14,21 @@ public class MyAuthenticationStateProvider : AuthenticationStateProvider
         }
     }
 
-    private ClaimsPrincipal _claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
+    private ClaimsPrincipal _claimsPrincipal = new(new ClaimsIdentity());
 
     private Task<AuthenticationState> _authenticationState;
 
     public MyAuthenticationStateProvider(I組織Repository 組織Repository)
     {
         _組織Repository = 組織Repository;
+        _authenticationState = Task.FromResult(new AuthenticationState(_claimsPrincipal));
     }
 
     public override Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         try
         {
-            if (_isAuthenticated)
+            if (IsAuthenticated)
             {
                 return Task.FromResult(new AuthenticationState(_claimsPrincipal));
             }
@@ -53,7 +54,7 @@ public class MyAuthenticationStateProvider : AuthenticationStateProvider
         // 組織のパスワードと入力されたパスワードが一致するか
         if (PasswordHasher.VerifyPassword(password, 組織.パスワード ?? ""))
         {
-            NotifyUserAuthentication(組織.組織コード);
+            await NotifyUserAuthentication(組織.組織コード);
             return (true, string.Empty);
         }
 
@@ -61,11 +62,17 @@ public class MyAuthenticationStateProvider : AuthenticationStateProvider
     }
 
 
-    public void NotifyUserAuthentication(string 組織コード)
+    public async Task NotifyUserAuthentication(string 組織コード)
     {
+
+        //Roleはis管理組織で判定
+        var role = ((await _組織Repository.GetBy組織コードAsync(組織コード))?.Is管理組織 ?? false) ? "admin" : "user";
+
+
         var identity = new ClaimsIdentity(new[]
         {
             new Claim(ClaimTypes.Name, 組織コード),
+            new Claim(ClaimTypes.Role, role),
         }, "apiauth");
         _claimsPrincipal = new ClaimsPrincipal(identity);
         _authenticationState = Task.FromResult(new AuthenticationState(_claimsPrincipal));

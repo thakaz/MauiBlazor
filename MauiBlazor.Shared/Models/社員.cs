@@ -15,6 +15,9 @@ public class 社員
     public required string 名前 { get; set; }
     public string? 備考 { get; set; }
 
+    [Required]
+    public bool Is管理者 { get; set; } = false;
+
     public IList<社員カード> 社員カード { get; } = new List<社員カード>();
 
     public 社員設定? 社員設定 { get; set; } = new();

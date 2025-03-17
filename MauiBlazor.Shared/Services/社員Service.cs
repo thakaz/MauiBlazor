@@ -3,10 +3,10 @@
 
 public class 社員Service
 {
-    I社員Repository _社員Repository;
-    I社員打刻Repository _社員打刻Repository;
-    I社員カードRepository _社員カードRepository;
-    I通知Service _通知Service;
+    private readonly I社員Repository _社員Repository;
+    private readonly I社員打刻Repository _社員打刻Repository;
+    private readonly I社員カードRepository _社員カードRepository;
+    private readonly I通知Service _通知Service;
 
     public 社員Service(I社員Repository 社員Repository, I社員打刻Repository 社員打刻Repository, I社員カードRepository 社員カードRepository, I通知Service 通知Service)
     {
