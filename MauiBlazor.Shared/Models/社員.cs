@@ -12,7 +12,19 @@ public class 社員
     [Required]
     public int 入社年度 { get; set; }
     [Required]
-    public required string 名前 { get; set; }
+    public required string 名前性 { get; set; }
+    [Required]
+    public required string 名前名 { get; set; }
+    public string? フリガナ性 { get; set; }
+    public string? フリガナ名 { get; set; }
+    public string? ニックネーム { get; set; }
+
+    public string? メールアドレス { get; set; }
+
+
+
+    public string? fullName => $"{名前性} {名前名}";
+
     public string? 備考 { get; set; }
 
     [Required]

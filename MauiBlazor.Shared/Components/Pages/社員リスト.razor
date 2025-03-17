@@ -34,7 +34,7 @@
                     Class="employee-grid">
                     <PropertyColumn Property="@(p => p.Id)" Sortable="true" Title="ID" />
                     <PropertyColumn Property="@(p => p.社員番号)" Sortable="true" Title="社員番号" />
-                    <PropertyColumn Property="@(p => p.名前)" Sortable="true" Title="名前" />
+                    <PropertyColumn Property="@(p => p.fullName)" Sortable="true" Title="名前" />
                     <PropertyColumn Property="@(p => p.入社年度)" Sortable="true" Title="入社年度" />
                     <PropertyColumn Property="@(p => p.備考)" Sortable="true" Title="備考" />
                     <TemplateColumn Title="明細">
@@ -98,7 +98,7 @@
                 return;
             }
 
-            var new社員 = await 社員Repository.AddAsync(new 社員 { 社員番号 = 社員番号, 名前 = 名前, 組織Id = my組織.Id });
+            var new社員 = await 社員Repository.AddAsync(new 社員 { 社員番号 = 社員番号, 名前性 = 名前,名前名="", 組織Id = my組織.Id });
             社員s.Add(new社員);
         }
         catch (Exception e)

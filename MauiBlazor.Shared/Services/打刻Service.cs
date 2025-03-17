@@ -84,8 +84,14 @@ public class 打刻Service
             // 傘が必要かどうかを確認
             var 傘が必要 = await _天気Service.傘が必要か(DateOnly.FromDateTime(dateTime));
 
+
+            //呼び方の優先度
+            var 呼び方 = 社員.ニックネーム ?? 社員.フリガナ性 ?? 社員.名前性;
+
             // セリフを生成
-            var セリフ = _音声Service.打刻セリフ生成(社員.名前, 打刻種別.ToString(), 傘が必要);
+            var セリフ = _音声Service.打刻セリフ生成(呼び方, 打刻種別.ToString(), 傘が必要);
+
+
 
             // 音声を再生
             await _音声Service.音声再生Async(選択音声タイプ, セリフ);

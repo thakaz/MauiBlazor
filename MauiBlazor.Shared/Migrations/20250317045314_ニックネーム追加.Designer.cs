@@ -3,6 +3,7 @@ using System;
 using MauiBlazor.Shared.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MauiBlazor.Shared.Migrations
 {
     [DbContext(typeof(出退勤DbContext))]
-    partial class 出退勤DbContextModelSnapshot : ModelSnapshot
+    [Migration("20250317045314_ニックネーム追加")]
+    partial class ニックネーム追加
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

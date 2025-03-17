@@ -3,6 +3,7 @@ using System;
 using MauiBlazor.Shared.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MauiBlazor.Shared.Migrations
 {
     [DbContext(typeof(出退勤DbContext))]
-    partial class 出退勤DbContextModelSnapshot : ModelSnapshot
+    [Migration("20250317040537_組織とか追加3")]
+    partial class 組織とか追加3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,29 +63,13 @@ namespace MauiBlazor.Shared.Migrations
                     b.Property<bool>("Is管理者")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("ニックネーム")
-                        .HasColumnType("text");
-
-                    b.Property<string>("フリガナ名")
-                        .HasColumnType("text");
-
-                    b.Property<string>("フリガナ性")
-                        .HasColumnType("text");
-
-                    b.Property<string>("メールアドレス")
-                        .HasColumnType("text");
-
                     b.Property<string>("備考")
                         .HasColumnType("text");
 
                     b.Property<int>("入社年度")
                         .HasColumnType("integer");
 
-                    b.Property<string>("名前名")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("名前性")
+                    b.Property<string>("名前")
                         .IsRequired()
                         .HasColumnType("text");
 

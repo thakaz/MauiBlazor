@@ -5,6 +5,7 @@
 @inject I音声Service 音声Service
 @inject 天気Service 天気Service
 @inject I通知Service 通知Service
+@inject IHttpClientFactory _httpClientFactory
 
 <div class="page-container">
     <div class="page-header">
@@ -36,7 +37,7 @@
                     </div>
                     <div class="info-row">
                         <div class="info-label">名前:</div>
-                        <div class="info-value">@社員.名前</div>
+                        <div class="info-value">@社員.fullName</div>
                     </div>
                     <div class="info-row">
                         <div class="info-label">入社年度:</div>
@@ -256,13 +257,17 @@
             var 傘が必要 = await 天気Service.傘が必要か(DateOnly.FromDateTime(DateTime.Now));
 
             // ランダムなセリフを生成
-            var セリフ = ランダムセリフ生成(社員.名前, 傘が必要);
+            //呼び方の優先度
+            var 呼び方 = 社員.ニックネーム ?? 社員.フリガナ性 ?? 社員.名前性;
+
+
+            var セリフ = await ランダムセリフ生成(呼び方, 傘が必要);
 
             // 音声を再生
             await 音声Service.音声再生Async(音声タイプ値, セリフ);
 
             // 通知を表示
-            通知Service.ShowToast(ToastIntent.Info, "音声テスト中...");
+            通知Service.ShowToast(ToastIntent.Info, セリフ);
         }
         catch (Exception ex)
         {
@@ -270,39 +275,29 @@
         }
     }
 
-    private string ランダムセリフ生成(string 社員名, bool 傘が必要)
+    private async Task<string> ランダムセリフ生成(string 社員名, bool 傘が必要)
     {
-        // ランダムなセリフのリスト
-        var セリフリスト = new List<string>
-        {
-            $"{社員名}さん、おはようございます。今日も一日頑張りましょう！",
-            $"{社員名}さん、こんにちは。お疲れ様です。",
-            $"{社員名}さん、こんばんは。お疲れ様でした。",
-            $"{社員名}さん、いつもお疲れ様です。体調はいかがですか？",
-            $"{社員名}さん、今日の調子はどうですか？",
-            $"こんにちは、{社員名}さん。今日も素晴らしい一日になりますように。",
-            $"{社員名}さん、お仕事頑張ってください！",
-            $"{社員名}さん、素敵な一日をお過ごしください。"
-        };
 
-        // 天気に関するセリフ
-        if (傘が必要)
+        var client = _httpClientFactory.CreateClient();
+        // ランダムなセリフのリスト
+        var response = await client.GetAsync("data/serif.json");
+        
+        var type = 傘が必要 ? "rain" : "sunny";
+
+        List<string> セリフリスト = new();
+
+        if (response.IsSuccessStatusCode)
         {
-            セリフリスト.Add($"{社員名}さん、今日は雨や雪の予報です。傘をお忘れなく！");
-            セリフリスト.Add($"{社員名}さん、外は雨のようです。お気をつけてお過ごしください。");
-            セリフリスト.Add($"今日は天気が悪いようですね、{社員名}さん。暖かくしてお過ごしください。");
-        }
-        else
-        {
-            セリフリスト.Add($"{社員名}さん、今日は良い天気ですね。素敵な一日をお過ごしください。");
-            セリフリスト.Add($"{社員名}さん、天気が良くて気持ちが良いですね。");
-            セリフリスト.Add($"今日は晴れていて気持ちが良いですね、{社員名}さん。");
+            var json = await response.Content.ReadAsStringAsync();
+            var serifs = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, List<string>>>(json);
+            セリフリスト = serifs != null && serifs.ContainsKey(type) ? serifs[type] : new List<string>();
         }
 
         // ランダムにセリフを選択
         var random = new Random();
         return セリフリスト[random.Next(セリフリスト.Count)];
     }
+
 
     private async Task メモ追加()
     {
