@@ -1,6 +1,7 @@
 ﻿using MauiBlazor.Shared.Data.Repositories;
 using MauiBlazor.Shared.Models;
 using MauiBlazor.Shared.Services;
+using MauiBlazor.Shared.Utils;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Moq;
 
@@ -15,6 +16,8 @@ namespace MauiBlazor.Tests
         private readonly Mock<I音声Service> _音声ServiceMock;
         private readonly Mock<天気Service> _天気ServiceMock;
         private readonly 打刻Service _打刻Service;
+        private readonly Mock<IFileUtils> _fileUtils;
+
 
         public 打刻ServiceTest()
         {
@@ -23,13 +26,15 @@ namespace MauiBlazor.Tests
             _通知ServiceMock = new Mock<I通知Service>();
             _音声ServiceMock = new Mock<I音声Service>();
             _天気ServiceMock = new Mock<天気Service>();
+            _fileUtils = new Mock<IFileUtils>();
 
             _打刻Service = new 打刻Service(
                 _社員RepositoryMock.Object,
                 _社員打刻RepositoryMock.Object,
                 _通知ServiceMock.Object,
                 _音声ServiceMock.Object,
-                _天気ServiceMock.Object
+                _天気ServiceMock.Object,
+                _fileUtils.Object
             );
         }
 
